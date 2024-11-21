@@ -1,0 +1,201 @@
+.col input[type="text"],
+.col input[type="number"],
+.col input[type="password"],
+.col input[type="email"],
+.col input[type="date"],
+.col input[type="time"]{
+    display: flex;
+    width: 80%;
+    border: none;
+    background: transparent;
+    border-bottom: 1.5px solid #39A900;
+    font-family: 'Prompt', sans-serif;
+    outline: none;
+    height: 40px;
+    color: black;
+    text-align: center;
+}
+input::placeholder{
+    text-align: center;
+}
+label{
+    color: black;
+    font-weight: bold;
+    font-family: 'Prompt', sans-serif;
+}
+h1{
+    color: #39A900;
+    font-weight: bold;
+    font-family: 'Prompt', sans-serif;
+}
+
+form input[type="file"]:focus{
+    border-color: #39A900;
+    outline: none;
+    box-shadow: none;
+}
+
+.bt{
+    width: 200px;
+    border-radius: 12px;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px;
+    font-size: 17px;
+    font-family: 'Prompt', sans-serif;
+    box-shadow: 5px 5px 10px #999;
+    cursor: pointer;  
+}
+.col select{
+    display: flex;
+    width: 80%;
+    border: none;
+    background: transparent;
+    border-bottom: 1.5px solid #39A900;
+    font-family: 'Prompt', sans-serif;
+    outline: none;
+    height: 40px;
+    color: black ;
+    text-align: center;
+
+}
+
+/*tables*/
+tr:nth-child(even){
+    background-color: #eee;
+}
+
+
+.col textarea{
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid #39A900;
+    outline: none;
+    font-family: 'Prompt', sans-serif;
+} 
+
+
+
+
+tr .form-control{
+    width: 90%;
+    margin: 22px;  
+   border-radius: 8px;
+    border: 1px solid #39A900;
+}
+.t-head{
+    text-align: center;
+}
+
+#bt{
+    background: #39A900;
+}
+#bt i{
+    color: white;
+}
+
+
+#table2{
+    margin: 35px;
+    padding: 0;
+}
+
+#table2 tr .parti{
+    width: 180px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+  
+    height: 58px;
+}
+#table2 tr .area{
+    width: 380px;
+   
+    border-radius: 5px;
+    height: 62px;
+}
+#table2 .area::placeholder{
+    text-align: center;
+}
+#table3 .area::placeholder{
+    text-align: center;
+}
+
+#table3{
+    margin: 35px;
+    padding: 0;
+}
+
+#table3 tr .parti{
+    width: 100px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+   margin:5px;
+    height: 58px;
+}
+#table3 tr .area{
+    width: 340px;
+    border-radius: 5px;
+    height: 62px;
+}
+#table3 .area::placeholder{
+    text-align: center;
+}
+
+.back-head{
+    background-color: #343a40;
+    color: white;
+}
+.table{
+    padding: 20px;
+}
+#table2 .select{
+    width: 800px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+    margin:5px;
+    height: 58px;
+    text-align: left;
+    font-size: 14px;
+}
+
+#table3 .selectt{
+    width: 100px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+    margin:5px;
+    height: 58px;
+    text-align: left;
+    font-size: 14px;
+}
+#table5 tr .parti{
+    width: 320px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+   margin:5px;
+    height: 58px;
+}
+#table4 tr .comit{
+    width: 230px;
+    border-radius: 5px;
+    margin-left: 2px;
+    height: 60px;
+}
+#table4 tr .parti{
+    width: 150px;
+    border: 1px solid #39A900;
+    border-radius: 5px;
+   margin:5px;
+    height: 58px;
+}
+.parrafo{
+    font-size: 22px;
+    text-align: left;
+}
+.privacidad input[type="radio"]{
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+.privacidad label{
+    font-size: 24px;
+}

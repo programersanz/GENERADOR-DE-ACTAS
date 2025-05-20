@@ -19,14 +19,15 @@ $contraseña = '';
 
 
 $conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
-if ($conexion -> connect_errno) {
-die( "Fallo la conexión : (" . $conexion -> mysqli_connect_errno() 
-. ") " . $conexion -> mysqli_connect_error());
+if ($conexion -> connect_errno) 
+  $conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
+  if ($conexion -> connect_errno) {
+    die("Fallo la conexión: (" . $conexion->connect_errno . ") " . $conexion->connect_error);
 }
   ///////////////////CONSULTA DE LOS ALUMNOS///////////////////////
 
 
-        if(isset($_POST['']))
+        if(isset($_POST['participantes']))
         {
         $items0=($_POST['n_acta']);
         $items1=($_POST['nombre']);
@@ -55,7 +56,7 @@ die( "Fallo la conexión : (" . $conexion -> mysqli_connect_errno()
         ///////// QUERY DE INSERCIÓN /////
         
         $query = "INSERT INTO participantes (n_acta,nombre,apellido,cargo,asistencia) VALUES $valoresQ ";
-        $sqlRes=$conexion->query($query) or mysql_error();
+        $sqlRes = $conexion->query($query) or die($conexion->error);
         
                                 $item0 = next( $items0 );
                                 $item1 = next( $items1 );

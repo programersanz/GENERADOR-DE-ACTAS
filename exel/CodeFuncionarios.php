@@ -1,61 +1,79 @@
 <?php
 session_start();
-include('dbconfig.php');
-
+include('dbconfig.php'); // Asegúrate de que define correctamente la conexión $con
 require 'vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
-if(isset($_POST['save_excel_data'])){
+if (isset($_POST['save_excel_data'])) {
 
-    $fileName= $_FILES['import_file']['name'];
-    $file_ext= pathinfo($fileName, PATHINFO_EXTENSION);
+    $fileName = $_FILES['import_file']['name'];
+    $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
     $allowed_ext = ['xls', 'csv', 'xlsx'];
-
-
 
     if (in_array($file_ext, $allowed_ext)) {
         $inputFileNamePath = $_FILES['import_file']['tmp_name'];
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
+        $spreadsheet = IOFactory::load($inputFileNamePath);
         $data = $spreadsheet->getActiveSheet()->toArray();
-        
-        $count = "0";
-            foreach ($data as $row) {
 
-                if($count > 0)
-                {
-                    $nombre =  $row['0'];
-                    $apellido = $row['1'];
-                    $cargo =$row['2'];
-    
-                    $funcionarios= "INSERT INTO funcionario (nombre, apellido, cargo) VALUES ('$nombre', '$apellido', '$cargo')";
-                    $result = mysqli_query($con, $funcionarios);
-                    $msg = true;
-                }
-                else
-                {
-                    $count = "1";
-                }
+        // Verificar conexión
+        if (!$con) {
+            $_SESSION['message'] = "Error de conexión a la base de datos";
+            header('Location: ../?c=vistas&a=RegistroUsuExternos');
+            exit(0);
+        }
 
+        // Preparar consulta con parámetros
+        $stmt = mysqli_prepare($con, "INSERT INTO funcionario (nombre, apellido, tipodocf, documentof, correof, cargo) VALUES (?, ?, ?, ?, ?, ?)");
+
+        if (!$stmt) {
+            $_SESSION['message'] = "Error en la preparación de la consulta";
+            header('Location: ../?c=vistas&a=RegistroUsuExternos');
+            exit(0);
+        }
+
+        // Omitir la primera fila si contiene encabezados
+        $firstRow = true;
+        $successCount = 0;
+
+        foreach ($data as $row) {
+            if ($firstRow) {
+                $firstRow = false;
+                continue; // Saltar la primera fila
             }
 
-           if (isset($msg)) {
-                $_SESSION['message']="Archivo valido";
-                header('Location:../?c=vistas&a=RegistroUsuExternos');
-                exit(0);
-            }else {
-                $_SESSION['message']="Archivo no importado";
-                header('Location:../?c=vistas&a=RegistroUsuExternos');
-                exit(0);
+            $nombre = trim($row[0] ?? '');
+            $apellido = trim($row[1] ?? '');
+            $tipodocf = trim($row[2] ?? '');
+            $documentof = trim($row[3] ?? '');
+            $correof = trim($row[4] ?? '');
+            $cargo = trim($row[5] ?? '');
+
+            // Validar que no estén vacíos los campos esenciales
+            if ($nombre && $apellido && $documentof) {
+                mysqli_stmt_bind_param($stmt, "ssssss", $nombre, $apellido, $tipodocf, $documentof, $correof, $cargo);
+                if (mysqli_stmt_execute($stmt)) {
+                    $successCount++;
+                }
             }
-    }
-    else{
-        $_SESSION['message']="Archivo invalido";
-        header('Location:../?c=vistas&a=RegistroUsuExternos');
+        }
+
+        // Cerrar la consulta preparada
+        mysqli_stmt_close($stmt);
+
+        // Mensaje final
+        if ($successCount > 0) {
+            $_SESSION['message'] = "Se importaron $successCount registros correctamente";
+        } else {
+            $_SESSION['message'] = "No se importaron datos, verifica el archivo";
+        }
+
+        header('Location: ../?c=vistas&a=RegistroUsuExternos');
+        exit(0);
+    } else {
+        $_SESSION['message'] = "Formato de archivo no permitido";
+        header('Location: ../?c=vistas&a=RegistroUsuExternos');
         exit(0);
     }
-
-
 }
 ?>

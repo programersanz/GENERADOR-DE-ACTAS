@@ -1,5 +1,5 @@
 
-    <div id="content">
+<div id="content">
     <br>
    <center>
       <div  class="card w-75">
@@ -19,12 +19,35 @@
 <div class="col">
   <label for="">Nombre Instructor:</label>
   <input name="nombre" id='nombre' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Nombre">
-  </div>
+</div>
 
-  <div class="col">
+<div class="col">
   <label for="">Apellido Instructor:</label>
   <input name="apellido" id='apellido' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Apellido">
 </div>
+
+</div>
+<br>
+
+<!-- tipo documento y documento administrador-->
+<div class="row">
+
+<div class="col">
+<label for="">Tipo de documento:</label>
+  <select name="tipodoc" id='tipodoc' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de documento">
+  <option selected>Tipo de documento</option>
+  <option value=" C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="C.E">C.E</option>
+  <option value="P.E.P">P.E.P</option>
+  </select>
+</div>
+
+<div class="col">
+  <label for="">Número de documento:</label>
+  <input name="documento" id='documento' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Número documento">
+</div>
+
 </div>
 <br>
 
@@ -119,10 +142,6 @@
 
 </div>
 </div>
-
-
-
-
 
 
 </center>

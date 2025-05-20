@@ -1,20 +1,20 @@
 <?php
 
-
-
 class ficha{ 
 
-    private   $e=null;
-private  $id_ficha=null;
-private  $ficha_contador=null;
+private  $e= null;
+private  $id_ficha =null;
+    private  $ficha_contador =null;
 private  $N_ficha =null;
 private  $cantidad_apre =null;
-private  $programa =null ;
+private  $programa =null;
 private  $jornada =null;
 private  $tipo_forma =null;
 private  $aprendices =null;
-private  $fecha_inicio =null ;
-private  $fecha_fin =null ;
+private  $fecha_inicio =null;
+private  $fecha_fin =null;
+private  $fecha_iniciop =null;
+private  $fecha_finp =null;
 
 
 
@@ -24,32 +24,32 @@ public function __CONSTRUCT(){
 
 }
 
+
 public function insertar()
-
 {
-    try{
-    $query = "INSERT INTO ficha (ficha_contador,N_ficha,cantidad_apre,programa,jornada,tipo_forma,fecha_inicio,fecha_fin) VALUES (?,?,?,?,?,?,?,?);";
-    $this -> PDO-> prepare($query)
-                        ->execute(array(
-                            $this->ficha_contador,
-                            $this->N_ficha,
-                            $this->cantidad_apre,
-                            $this->programa,
-                            $this->jornada,
-                            $this->tipo_forma,
-                            $this->fecha_inicio,
-                            $this->fecha_fin
+    try {
 
-                        ));
-                        $this->id_ficha=$this->PDO->lastInsertId();
-                        return $this;
-                    }catch(Exception $e){
-                        die($e->getMessage());
-                    }
-                        
+        $query = "INSERT INTO ficha (ficha_contador, N_ficha, cantidad_apre, programa, jornada, tipo_forma, fecha_inicio, fecha_fin, fecha_iniciop, fecha_finp) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
+        $this->PDO->prepare($query)->execute(array(
+            $this->ficha_contador,
+            $this->N_ficha,
+            $this->cantidad_apre,
+            $this->programa,
+            $this->jornada,
+            $this->tipo_forma,
+            $this->fecha_inicio,
+            $this->fecha_fin,
+            $this->fecha_iniciop,
+            $this->fecha_finp
+        ));
 
-
+        $this->id_ficha = $this->PDO->lastInsertId();
+        return $this;
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
 }
 
 
@@ -86,8 +86,6 @@ public function fichas()
     }
 }
 
-
-
 public function Actualizarficha(ficha $ficha){
     try{
         $consulta="UPDATE ficha SET
@@ -97,7 +95,9 @@ public function Actualizarficha(ficha $ficha){
             jornada=?,
             tipo_forma=?,
             fecha_inicio=?,
-            fecha_fin=?
+            fecha_fin=?,
+            fecha_iniciop=?,
+            fecha_finp=?
 
             WHERE id_ficha=?;
         ";
@@ -110,16 +110,15 @@ public function Actualizarficha(ficha $ficha){
                      $ficha->getTipo_forma(),
                      $ficha->getFecha_inicio(),
                      $ficha->getFecha_fin(),
-                     $ficha->getId_ficha()
-
+                     $ficha->getFecha_iniciop(),
+                     $ficha->getFecha_finp(),
+                     $ficha->getId_ficha()               
 
                 ));
     }catch(Exception$e){
     }
 
    header("location:?c=vistas&a=ConsultarFicha");
-       
- 
 
 }
 
@@ -137,14 +136,11 @@ public function ActualizarFichaContador(ficha $ficha){
                      $ficha->getFicha_contador(),
                      $ficha->getId_ficha()
 
-
                 ));
     }catch(Exception$e){
     }
 
    header("location:?c=vistas&a=ConsultarFicha");
-       
- 
 
 }
 public function ObtenerFichaContador($id){
@@ -156,18 +152,14 @@ public function ObtenerFichaContador($id){
 
        $p ->setId_ficha($r->id_ficha);
        $p ->setFicha_contador($r->ficha_contador);
-
     
      return $p;
-
 
     }catch(Exception $e){
         die($e->getMessage());
     }
 
 }
-
-
 
 public function Eliminarfi($id){
     try{
@@ -194,6 +186,8 @@ public function Obtenerficha($id){
        $p ->setTipo_forma($r->tipo_forma);
        $p ->setFecha_inicio($r->fecha_inicio);
        $p ->setFecha_fin($r->fecha_fin);
+       $p ->setFecha_iniciop($r->fecha_iniciop);
+       $p ->setFecha_finp($r->fecha_finp);
     
      return $p;
 
@@ -215,9 +209,6 @@ public function ListarFicha(){
 
 }
 
-
-
-
 public function getId_ficha()
 {
     return $this->id_ficha;
@@ -229,17 +220,16 @@ public function setId_ficha($id_ficha)
 
     return $this;
 }
-public function getFicha_contador()
-{
-    return $this->ficha_contador;
-}
 
-public function setFicha_contador($ficha_contador)
-{
-    $this->ficha_contador = $ficha_contador;
 
-    return $this;
-}
+
+    public function setFicha_contador($ficha_contador) {
+        $this->ficha_contador = $ficha_contador;
+    }
+
+    public function getFicha_contador() {
+        return $this->ficha_contador;
+    }
 
 
 public function getN_ficha()
@@ -253,8 +243,6 @@ public function setN_ficha($N_ficha)
 
     return $this;
 }
-
-
 
 public function getCantidad_apre()
 {
@@ -280,8 +268,6 @@ public function setPrograma($programa)
     return $this;
 }
 
-
-
 public function getJornada()
 {
     return $this->jornada;
@@ -294,7 +280,6 @@ public function setJornada($jornada)
     return $this;
 }
 
-
 public function getTipo_forma()
 {
     return $this->tipo_forma;
@@ -306,7 +291,6 @@ public function setTipo_forma($tipo_forma)
 
     return $this;
 }
-
 
 public function getAprendices()
 {
@@ -332,7 +316,6 @@ public function setFecha_inicio($fecha_inicio)
     return $this;
 }
 
-
 public function getFecha_fin()
 {
     return $this->fecha_fin;
@@ -345,6 +328,28 @@ public function setFecha_fin($fecha_fin)
     return $this;
 }
 
+public function getFecha_iniciop()
+{
+    return $this->fecha_iniciop;
+}
 
+public function setFecha_iniciop($fecha_iniciop)
+{
+    $this->fecha_iniciop = $fecha_iniciop;
+
+    return $this;
+}
+
+public function getFecha_finp()
+{
+    return $this->fecha_finp;
+}
+
+public function setFecha_finp($fecha_finp)
+{
+    $this->fecha_finp = $fecha_finp;
+
+    return $this;
+}
 
 }

@@ -25,6 +25,8 @@ class InstructorController{
         $instructor->setId_instructor(intval($_POST['id_instructor']));
         $instructor->setNombre($_POST['nombre']);
         $instructor->setApellido($_POST['apellido']);
+        $instructor->setTipodoc($_POST['tipodoc']);
+        $instructor->setDocumento($_POST['documento']);
         $instructor->setTelefono($_POST['telefono']);
         $instructor->setRol($_POST['rol']);
         $instructor->setCorreo($_POST['correo']);

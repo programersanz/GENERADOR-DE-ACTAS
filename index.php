@@ -3,7 +3,14 @@ require_once "modelo/usuarios.php";
 require_once "modelo/basededatos.php";
 
 
+
 session_start();
+
+if (isset($_GET['c']) && $_GET['c'] == 'acta' && isset($_GET['a']) && $_GET['a'] == 'crear') {
+    $controlador = new acta();
+    $controlador->generarFormularioActa($_GET['ficha']);
+}
+
 
 if(isset($_SESSION['user']) || (isset($_POST['correo']) && isset($_POST['contrasena']))){ //esto valida que se necesite una sesion iniciada o hacer login para usar cualquier metodo 
 
@@ -29,6 +36,3 @@ if (!isset($_GET['c'])) { //home controller es login
   $controller = new InicioController();
   call_user_func(array($controller, "inicio"));
 }
-
-
-

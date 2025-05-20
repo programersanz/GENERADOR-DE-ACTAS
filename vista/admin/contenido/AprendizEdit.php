@@ -53,11 +53,12 @@
   <label for="">Tipo documento:</label>
   <select name="Tipo" id='Tipo' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Modalidad">
   <option selected> <?=$p->getTipo()?></option>
-  <option value="CC">CC</option>
-  <option value="TI">TI</option>
-  <option value="CE">CE</option>
-  <option value="TE">TE</option>
-  <option value="PAS">PAS</option>
+  <option value="C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="C.E">C.E</option>
+  <option value="T.E">T.E</option>
+  <option value="T.E">P.P.T</option>
+  <option value="P..S">P.A.S</option>
 
   </select>
 </div>
@@ -78,10 +79,13 @@
   <label for="">Estado de formación:</label>
   <select name="Estado" id='Estado' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Estado de formación">
   <option selected> <?=$p->getEstado_forma()?></option>
-  <option value="En formación">En formación</option>
-  <option value="Transladado">Transladado</option>
-  <option value="Cancelado">Cancelado</option>
-  <option value="Retiro voluntario">Retiro voluntario</option>
+  <option value="EN FORMACIÓN">EN FORMACIÓN</option>
+  <option value="INDUCCIÓN">INDUCCIÓN</option>
+  <option value="TRANSLADADO">TRANSLADADO</option>
+  <option value="CANCELADO">CANCELADO</option>
+  <option value="RETIRO VOLUNTARIO">RETIRO VOLUNTARIO</option>
+  <option value="CONDICIONADO">CONDICIONADO</option>
+  <option value="APLAZADO">APLAZADO</option>
   </select>
 </div>
 

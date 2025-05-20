@@ -2,6 +2,9 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+  <body class="<?= isset($ocultarMenu) && $ocultarMenu ? 'sin-menu' : '' ?>">
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -60,12 +63,11 @@
 
       <ul class="list-unstyled components">
 
-      <li>
+        <li>
           <a href="?c=vistas&a=usuPerfil"><i class="fas fa-circle-user"></i>Perfil</a>
         </li>
-
         <li>
-          <a href="?c=vistas&a=usuActas"><i class="fas fa-clipboard"></i>Actas</a>
+          <a href="?c=vistas&a=ConsultarFicha2"><i class="fas fa-circle-user"></i>Fichas</a>
         </li>
 
       </ul>

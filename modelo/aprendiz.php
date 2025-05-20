@@ -104,7 +104,7 @@ public function listprograma()
     try{
         $query = $this->PDO->prepare("SELECT * FROM programa");
         $query->execute();
-        return $query->fetchAll(PDO::FETCH_CLASS,_CLASS_);//con este mapea los registros que vienen de product y los convierte en objeto de tipo podruct y permite usar todos los metodos que estan ahi metidos 
+        return $query->fetchAll(PDO::FETCH_CLASS,'programa');//con este mapea los registros que vienen de product y los convierte en objeto de tipo podruct y permite usar todos los metodos que estan ahi metidos 
     }catch (Exception $e){
         die ($e->getMessage());
     }

@@ -71,12 +71,12 @@ class ActaController{
 
 
 
-  public function FormCrear(){
+  public function Participante($id){
 
     if(isset($_GET['id'])){
     
     
-      $p=$this ->modelo ->Participantes ($_GET['id']);
+      $p=$this ->modelo ->getParticipantes ($_GET['id']);
     
       require_once "vista/admin/cabecera/cabecera.php";
       require_once "vista/admin/contenido/editar.php";

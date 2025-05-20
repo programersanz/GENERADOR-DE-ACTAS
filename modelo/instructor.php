@@ -17,6 +17,8 @@ private   $e=null;
 private   $nombre=null;
 private   $apellido =null;
 private   $telefono =null;
+private   $tipodoc =null;
+private   $documento =null;
 private   $rol =null;
 private   $correo =null;
 private   $contraseña =null;
@@ -41,6 +43,8 @@ public function Obtener($id){
         $p ->setId_instructor($r->id_instructor);
         $p ->setNombre($r->nombre);
         $p ->setApellido($r->apellido);
+        $p ->setTipodoc($r->tipodoc);
+        $p ->setDocumento($r->documento);
         $p ->setTelefono($r->telefono);
         $p ->setRol($r->rol);
         $p ->setCorreo($r->correo);
@@ -72,11 +76,13 @@ public function Eliminarinstructor($id){
 public function insertarinstructor()
 {
     try{
-    $query = "INSERT INTO instructor (nombre,apellido,telefono,rol,correo,contraseña) VALUES (?,?,?,?,?,?);";
+    $query = "INSERT INTO instructor (nombre,apellido,tipodoc,documento,telefono,rol,correo,contraseña) VALUES (?,?,?,?,?,?,?,?);";
     $this -> PDO-> prepare($query)
                         ->execute(array(
                             $this->nombre,
                             $this->apellido,
+                            $this->tipodoc,
+                            $this->documento,
                             $this->telefono,
                             $this->rol,
                             $this->correo,
@@ -99,6 +105,8 @@ public function Actualizarinstructor(instructor $instructor){
         $consulta="UPDATE instructor SET
             nombre=?,
             apellido=?,
+            tipodoc=?,
+            documento=?,
             telefono=?,
             rol=?,
             correo=?,
@@ -110,6 +118,8 @@ public function Actualizarinstructor(instructor $instructor){
                 ->execute(array(
                      $instructor->getNombre(),
                      $instructor->getApellido(),
+                     $instructor->getTipodoc(),
+                     $instructor->getDocumento(),
                      $instructor->getTelefono(),
                      $instructor->getRol(),
                      $instructor->getCorreo(),
@@ -161,6 +171,30 @@ public function getApellido()
 public function setApellido($apellido)
 {
     $this->apellido = $apellido;
+
+    return $this;
+}
+
+public function getTipodoc()
+{
+    return $this->tipodoc;
+}
+
+public function setTipodoc($tipodoc)
+{
+    $this->tipodoc = $tipodoc;
+
+    return $this;
+}
+
+public function getDocumento()
+{
+    return $this->documento;
+}
+
+public function setDocumento($documento)
+{
+    $this->documento = $documento;
 
     return $this;
 }

@@ -8,10 +8,13 @@ class funcionario{
     
 
 
-    private   $e=null;
-    private   $id_funcionario=null;
+private   $e=null;
+private   $id_funcionario=null;
 private   $nombre=null;
 private  $apellido =null;
+private   $tipodocf=null;
+private  $documentof =null;
+private   $correof =null;
 private   $cargo =null;
 
 
@@ -50,11 +53,14 @@ public function funcio()
 public function insertarfuncionario()
 {
     try{
-    $query = "INSERT INTO funcionario (nombre,apellido,cargo) VALUES (?,?,?);";
+    $query = "INSERT INTO funcionario (nombre,apellido,tipodocf,documentof,correof,cargo) VALUES (?,?,?,?,?,?);";
     $this -> PDO-> prepare($query)
                         ->execute(array(
                             $this->nombre,
                             $this->apellido,
+                            $this->tipodocf,
+                            $this->documentof,
+                            $this->correof,
                             $this->cargo
 
                         ));
@@ -77,6 +83,9 @@ public function Actualizarfuncionario(funcionario $funcionario){
            
             nombre=?,
             apellido=?,
+            tipodocf=?,
+            documentof=?,
+            correof=?,
             cargo=?
 
 
@@ -87,6 +96,9 @@ public function Actualizarfuncionario(funcionario $funcionario){
                      
                      $funcionario->getNombre(),
                      $funcionario->getApellido(),
+                     $funcionario->getTipodocf(),
+                     $funcionario->getDocumentof(),
+                     $funcionario->getCorreof(),
                      $funcionario->getCargo(),
                      $funcionario->getId_funcionario()
 
@@ -119,6 +131,9 @@ public function Obtenerfuncionario($id){
        $p ->setId_funcionario($r->id_funcionario);
        $p ->setNombre($r->nombre);
        $p ->setApellido($r->apellido);
+       $p ->setTipodocf($r->tipodocf);
+       $p ->setDocumentof($r->documentof);
+       $p ->setCorreof($r->correof);
        $p ->setCargo($r->cargo);
 
     
@@ -184,6 +199,43 @@ public function setApellido($apellido)
     return $this;
 }
 
+public function getTipodocf()
+{
+    return $this->tipodocf;
+}
+
+public function setTipodocf($tipodocf)
+{
+    $this->tipodocf = $tipodocf;
+
+    return $this;
+}
+
+
+public function getDocumentof()
+{
+    return $this->documentof;
+}
+
+public function setDocumentof($documentof)
+{
+    $this->documentof = $documentof;
+
+    return $this;
+}
+
+
+public function getCorreof()
+{
+    return $this->correof;
+}
+
+public function setCorreof($correof)
+{
+    $this->correof = $correof;
+
+    return $this;
+}
 
 public function getCargo()
 {

@@ -12,9 +12,10 @@
                     <th scope="col">Programa</th>
                     <th scope="col">Jornada</th>
                     <th scope="col">Formación</th>
-                    <th scope="col">Fecha inicio (lectiva)</th>
-                    <th scope="col">Fecha Fin (lectiva)</th>
-                    <th scope="col">Cont</th>
+                    <th scope="col">Fecha inicio_(lectiva)</th>
+                    <th scope="col">Fecha Fin_(lectiva)</th>
+                    <th scope="col">Fecha inicio (productiva)</th>
+                    <th scope="col">Fecha Fin (productiva)</th>
                     <th scope="col">Actas</th> 
                     <th scope="col">Nueva acta</th> 
                     <th scope="col">Editar</th> 
@@ -35,21 +36,15 @@
                     <td><?= htmlspecialchars($r->tipo_forma) ?></td>
                     <td><?= htmlspecialchars($r->fecha_inicio) ?></td>
                     <td><?= htmlspecialchars($r->fecha_fin) ?></td>
+                    <td><?= htmlspecialchars($r->fecha_iniciop) ?></td>
+                    <td><?= htmlspecialchars($r->fecha_finp) ?></td>
+                    <td>
+                    <a href="?c=Acta&a=Menu&id=<?= htmlspecialchars($r->N_ficha) ?>" 
+                    type="button" class="btn" style="background-color: #39A900;">
+                    <i class="fas fa-book text-white"></i>
+                    </a>
+                    </td>
 
-                    <td>
-                        <center>
-                            <a href="?c=Ficha&a=FormFichaContador&id=<?= htmlspecialchars($r->id_ficha) ?>" 
-                               type="button" class="btn" style="background-color: #39A900;">
-                                <i class="fas fa-hashtag text-white"></i>
-                            </a>
-                        </center>
-                    </td>
-                    <td>
-                        <a href="?c=Acta&a=menu&id=<?= htmlspecialchars($r->N_ficha) ?>" 
-                           type="button" class="btn" style="background-color: #39A900;">
-                            <i class="fas fa-book text-white"></i>
-                        </a>
-                    </td>
                     <td>
                         <center>
                             <a href="?c=Acta&a=FormCrearficha&id=<?= htmlspecialchars($r->id_ficha) ?>&ficha=<?= htmlspecialchars($r->N_ficha) ?>&acta_contador=<?= htmlspecialchars($r->ficha_contador) ?>" 

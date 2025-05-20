@@ -3,18 +3,89 @@
 require_once "modelo/ficha.php";
 require_once "modelo/acta.php";
 
+
 class acta{
+    
+    public function ObtenerDatosFicha($ficha)
+    {
+        // Implementation of the method
+        // Example:
+        $sql = "SELECT * FROM fichas WHERE ficha = ?";
+        $stmt = $this->PDO->prepare($sql);
+        $stmt->execute([$ficha]);
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+    
+    // Add the missing getter methods
+    public function getAprendices_dest()
+    {
+        return $this->aprendices_dest;
+    }
+    
+    public function getDescargos_apre()
+    {
+        return $this->descargos_apre;
+    }
+    
 
-    private $contador = null;
-
-
-    private   $e=null;
-
-private   $n_acta=null;
-private   $acta_no=null;
+private $contador = null;
+private $e = null;
+private $descargos_apre;
+private $nombre;
+private $apellido;
+private $cargo;
+private $asistencia;
+private $C_ficha;
+private $C_acta;
+private $nombre_aprendiz;
+private $tipo;
+private $documento;
+private $tipo_con;
+private $documento_con;
+private $nombre_its;
+private $description;
+private $falta;
+private $Aprendiz;
+private $aprendices_dest;
+private $reglamento;
+private $cla_falta;
+private $n_ficha;
+private $Q_acta;
+private $medida;
+private $descripcion_m;
+private $cumplimiento;
+private $id;
+private $A_ficha;
+private $A_acta;
+private $A_aprendiz;
+private $A_instructor; 
+private $A_descripcion;
+private $A_cumplimiento;
+private $c_contador; // Added missing property
+private $id_destacados;
+private $acta_des;
+private $nombre_des;
+private $apellido_des;
+private $id_desarrollo;
+private $d_acta;
+private $d_nombre_aprendiz;
+private $d_descargos_its;
+private $d_descargos_its_b;
+private $d_descargos_its_c;
+private $d_descargos_aprendiz;
+private $medida_formativa_comite;
+private $inf_jefe_taller;
+private $inf_instructores;
+private $acta_rar;
+private $ficha_rar;
+private $fname;
+private $name;
+private $hechos_actuales; // Added property declaration
+private  $n_acta=null;
+private  $acta_no=null;
 private  $acta_contador =null;
 private  $nom_rev =null;
-private   $ciudad =null;
+private  $ciudad =null;
 private  $fecha =null ;
 private  $hora_in =null;
 private  $hora_fin =null;
@@ -26,281 +97,257 @@ private  $participantes =null ;
 private  $inf_ficha =null ;
 private  $casos_ant =null ;
 private  $casos_part =null ;
-private  $hechos_actuales =null ;
-private  $desarrollo =null ;
+private  $desarrollo_comite =null ;
 private  $informe_vocero =null ;
-private  $conclusion=null;
+private  $informe_subvocero =null ;
+private  $conclusiones=null;
 private  $ficha =null ;
 private  $programa =null;
 private  $privacidad =null;
-
+private  $compromisos =null;
 
 private $PDO;
 public function __CONSTRUCT(){
-    $this->PDO = BaseDeDatos::conectar();
+    $this->PDO = new PDO('mysql:host=localhost;dbname=acta_completas', 'root', '', [
+        PDO::ATTR_PERSISTENT => true,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    ]);
 
 }
+public function generarFormularioActa($ficha) {
+    // Sanitizar la ficha
+    $mensaje = "Formulario Acta generado para la ficha: " . htmlspecialchars($ficha);
 
-public function Actualizar(acta $acta){
-    try{
-        $consulta="UPDATE acta SET
-            nom_rev=?,
-            ciudad=?,
-            fecha=?,
-            ficha=?,
-            programa=?,
-            hora_in=?,
-            hora_fin=?,
-            lu_en=?,
-            direccion=?,
-            agenda=?,
-            objetivos=?,
-            participantes=?,
-            inf_ficha=?,
-            casos_ant=?,
-            casos_part=?,
-            hechos_actuales=?,
-            desarrollo=?,
-            informe_vocero=?,
-            conclusion=?
-            WHERE n_acta=?;
-        ";
-        $this->PDO->prepare($consulta)
-                ->execute(array(
-                     $acta->getNom_rev(),
-                     $acta->getCiudad(),
-                     $acta->getFecha(),
-                     $acta->getFicha(),
-                     $acta->getPrograma(),
-                     $acta->getHora_in(),
-                     $acta->getHora_fin(),
-                     $acta->getLu_en(),
-                     $acta->getDireccion(),
-                     $acta->getAgenda(),
-                     $acta->getObjetivos(),
-                     $acta->getParticipantes(),
-                     $acta->getInf_ficha(),
-                     $acta->getCasos_ant(),
-                     $acta->getCasos_part(),
-                     $acta->getHechos_actuales(),
-                     $acta->getDesarrollo(),
-                     $acta->getInforme_vocero(),
-                     $acta->getConclusion(),
-                     $acta->getN_acta()
+    // Retornar el mensaje en lugar de imprimirlo
+    return $mensaje;
+}
 
 
-                ));
-    }catch(Exception$e){
-   
-         header("location:?c=vistas&a=ConsultarFicha");
+
+
+public function VerificarFicha($ficha)
+{
+    try {
+        $ficha = (int)$ficha; // Asegurar que sea entero
+
+        $sql = "SELECT COUNT(*) AS total FROM ficha WHERE id_ficha = ?";
+        $stmt = $this->PDO->prepare($sql);
+        $stmt->execute([$ficha]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Retornar verdadero si la ficha existe (total > 0)
+        return $resultado['total'] > 0;
+    } catch (Exception $e) {
+        // Registrar el error en un archivo de log (opcional) y retornar falso
+        error_log("Error en VerificarFicha: " . $e->getMessage());
+        return false;
     }
-
 }
+
+
+
+
+    public function Actualizar(acta $acta) {
+        try {
+            $consulta = "UPDATE acta SET
+                nom_rev = ?,
+                ciudad = ?,
+                fecha = ?,
+                hora_in = ?,
+                hora_fin = ?,
+                lu_en = ?,
+                direccion = ?,
+                agenda = ?,
+                objetivos = ?,
+                participantes = ?,
+                inf_ficha = ?,
+                casos_ant = ?,
+                aprendices_dest = ?,
+                casos_part = ?,
+                desarrollo_comite = ?,
+                hechos_actuales = ?,
+                informe_vocero = ?,
+                informe_subvocero = ?,
+                descargos_apre = ?,
+                conclusiones = ?,
+                ficha = ?,
+                programa = ?,
+                privacidad = ?,
+                compromisos = ?
+                WHERE n_acta = ?;";
+            
+            $this->PDO->prepare($consulta)->execute([
+                $acta->getNom_rev(),
+                $acta->getCiudad(),
+                $acta->getFecha(),
+                $acta->getHora_in(),
+                $acta->getHora_fin(),
+                $acta->getLu_en(),
+                $acta->getDireccion(),
+                $acta->getAgenda(),
+                $acta->getObjetivos(),
+                $acta->getParticipantes(),
+                $acta->getInf_ficha(),
+                $acta->getCasos_ant(),
+                $acta->getAprendices_dest(),
+                $acta->getCasos_part(),
+                $acta->getDesarrollo_comite(),
+                $acta->getHechos_actuales(),
+                $acta->getInforme_vocero(),
+                $acta->getInforme_subvocero(),
+                $acta->getDescargos_apre(),
+                $acta->getConclusiones(),
+                $acta->getFicha(),
+                $acta->getPrograma(),
+                $acta->getPrivacidad(),
+                $acta->getCompromisos(),
+                $acta->getN_acta()
+            ]);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            header("location:?c=vistas&a=ConsultarFicha");
+            exit();
+        }
+    }
 
 
 
 /*inicio prueba*/
-public function insertarparti(){
-    $host = 'localhost';
-    $basededatos = 'acta_completas';
-    $usuario = 'root';
-    $contraseña = '';
-    
-    
-    
-    $conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
-    if ($conexion -> connect_errno) {
-    die( "Fallo la conexión : (" . $conexion -> mysqli_connect_errno() 
-    . ") " . $conexion -> mysqli_connect_error());
-    }
-      ///////////////////CONSULTA DE LOS ALUMNOS///////////////////////
-    
-    
-            if(isset($_POST['insertar']))
-            {
-            $items0=($_POST['n_acta']);
-            $items1=($_POST['nombre']);
-            $items2=($_POST['cargo']);
-            $items3=($_POST['asistencia']);
-            
-            while(true){
-            
-            $item0 = current($items0);  
-            $item1 = current($items1);
-            $item2 = current($items2);
-            $item3 = current($items3);
-            ////// ASIGNARLOSAVARIABLES ////
-            $n_acta=(( $item0 !== false) ? $item0 :",&nbsp;");
-            $nombre=(( $item1 !== false) ? $item1 :",&nbsp;");
-            $cargo=(( $item2 !== false) ? $item2 : ",&nbsp;");
-            $asistencia=(( $item3 !== false) ? $item3 : ",&nbsp;");
-            
-            //$valores= '('.$nombre.',"'.$apellido.'","'.$cargo.'","'.$asistencia.'"),';
-            $valores= "('$n_acta','$nombre','$cargo','$asistencia'),";
-            
-            $valoresQ =substr($valores,0,-1);
-            ///////// QUERY DE INSERCIÓN /////
-            
-            $query = "INSERT INTO participantes (n_acta,nombre,cargo,asistencia) VALUES $valoresQ ";
-            $sqlRes=$conexion->query($query) ;
-            
-                                    $item0 = next( $items0 );
-                                    $item1 = next( $items1 );
-                                    $item2= next($items2);
-                                    $item3 = next($items3);
-            
-            //$this->envioMail();
-            // $this->envioMail($Correo_Electronico,$Contrasena_participantes$participantes$participantes);
-            if($item0 === false && $item1 === false && $item2 === false && $item3 === false)break;
-            
-            //$this->envioMail();
-            // $this->envioMail($Correo_Electronico,$Contrasena_participantes$participantes$participantes);
-            }
-            if ($query) {
-             header("location:../?c=vistas&a=Particulares");
-            }
 
-            /*prueba2*/
-            
-            /*fin prueba2*/
-            }
-    
 
-}
-public function insertCasosEspeciales(){
-    
-      $usuario        = "root";
-      $password       = "";
-      $servidor       = "localhost";
-      $basededatos    = "acta_completas";
-      $con            = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
-      $db             = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
-      
+public function insertarCasosEspeciales($nombre_aprendiz, $tipo, $documento, $nombre_its, $description, $falta, $reglamento, $cla_falta)
+{
+    try {
+        $stmt = $this->PDO->prepare("INSERT INTO casos_especiales (
+            C_ficha, C_acta, nombre_aprendiz, tipo, documento, nombre_its, description, 
+            falta, reglamento, cla_falta
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-      $C_FICHA      = $_REQUEST['C_ficha'];
-      $C_ACTA      = $_REQUEST['C_acta'];
-      $C_APRENDIZ       = $_REQUEST['nombre_aprendiz'];
-      $C_INSTRUCTOR    = $_REQUEST['nombre_its'];
-      $C_DESCRIPCION         = $_REQUEST['description'];
-      $C_FALTA         = $_REQUEST['falta'];
-      $C_REGLAMENTO         = $_REQUEST['reglamento'];
-      $C_REGLAMENTO_A         = $_REQUEST['reglamento_a'];
-      $C_REGLAMENTO_B         = $_REQUEST['reglamento_b'];
-      $C_REGLAMENTO_C         = $_REQUEST['reglamento_c'];
-      
-      
-      /*function codAleatorio($length = 5) {
-          return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-      }
-      $CODE_REFERENCIA  = codAleatorio();*/
-      
-      
-      for ($i=0; $i < count($C_APRENDIZ); $i++){
-      
-      $InserData =("INSERT INTO casos_especiales (C_ficha, C_acta, nombre_aprendiz,nombre_its,description,falta,reglamento,reglamento_a,reglamento_b,reglamento_c) VALUES ('".$C_FICHA[$i]."','".$C_ACTA[$i]."','".$C_APRENDIZ[$i]."','".$C_INSTRUCTOR[$i]."','".$C_DESCRIPCION[$i]."','".$C_FALTA[$i]."','".$C_REGLAMENTO[$i]."','".$C_REGLAMENTO_A[$i]."','".$C_REGLAMENTO_B[$i]."','".$C_REGLAMENTO_C[$i]."')");
-      $resultadoInsertUser = mysqli_query($con, $InserData);
-        
+        for ($i = 0; $i < count($nombre_aprendiz); $i++) {
+            $stmt->execute([
+                $this->ficha,                  // C_ficha
+                $this->n_acta,                 // C_acta
+                $nombre_aprendiz[$i] ?? null,  // nombre_aprendiz
+                $tipo[$i] ?? null,             // tipo
+                $documento[$i] ?? null,        // documento
+                $nombre_its[$i] ?? null,       // nombre_its
+                $description[$i] ?? null,      // description
+                $falta[$i] ?? null,            // falta
+                $reglamento[$i] ?? null,       // reglamento
+                $cla_falta[$i] ?? null        // clasificación falta
+            ]);
         }
-      
+
+        return true;
+
+    } catch (Exception $e) {
+        error_log("Error al insertar casos especiales: " . $e->getMessage());
+        throw $e;
+    }
+}
+
+
+
+
+public function insertarAprendicesDestacados() {
+    try {
+        if (!isset($_REQUEST['acta_des'], $_REQUEST['nombre_des'], $_REQUEST['apellido_des'])) {
+            throw new Exception("Datos insuficientes para insertar aprendices destacados.");
+        }
+
+        $ACTA_DES = $_REQUEST['acta_des'];
+        $NOMBRE_DES = $_REQUEST['nombre_des'];
+        $APELLIDO_DES = $_REQUEST['apellido_des'];
+
+        // Validar que los arrays tienen el mismo tamaño
+        if (count($NOMBRE_DES) !== count($APELLIDO_DES) || count($NOMBRE_DES) !== count($ACTA_DES)) {
+            throw new Exception("Los datos no coinciden en cantidad de elementos.");
+        }
+
+        $stmt = $this->PDO->prepare("INSERT INTO aprendices_destacados (acta_des, nombre_des, apellido_des) VALUES (:acta_des, :nombre_des, :apellido_des)");
+
+        for ($i = 0; $i < count($NOMBRE_DES); $i++) {
+            $stmt->bindValue(':acta_des', $ACTA_DES[$i]);
+            $stmt->bindValue(':nombre_des', $NOMBRE_DES[$i]);
+            $stmt->bindValue(':apellido_des', $APELLIDO_DES[$i]);
+            $stmt->execute();
+        }
+
         header("location:?c=vistas&a=ConsultarFicha");
-    
+        exit();
+    } catch (Exception $e) {
+        error_log("Error al insertar aprendices destacados: " . $e->getMessage());
+        header("location:?c=vistas&a=ConsultarFicha&error=1");
+        exit();
     }
+}
 
-    public function insertarAprendicesDestacados(){
-        $usuario        = "root";
-        $password       = "";
-        $servidor       = "localhost";
-        $basededatos    = "acta_completas";
-        $con            = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
-        $db             = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
-        
+public function insertarConclusiones($n_acta, $Aprendiz, $tipo_con, $documento_con, $medida, $descripcion_m, $cumplimiento, $c_contador, $n_ficha)
+{
+    try {
+        $num_items = count($Aprendiz);
 
-        $ACTA_DES      = $_REQUEST['acta_des'];
-        $NOMBRE_DES       = $_REQUEST['nombre_des'];
-        $APELLIDO_DES    = $_REQUEST['apellido_des'];
-      
-        
-        
-        /*function codAleatorio($length = 5) {
-            return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+        // Verificar que todos los arreglos tengan la misma longitud
+        $longitudes = [
+            count($tipo_con), count($documento_con), count($medida), count($descripcion_m),
+            count($cumplimiento), count($c_contador), count($n_ficha)
+        ];
+
+        if (count(array_unique(array_merge([$num_items], $longitudes))) > 1) {
+            throw new Exception("❌ Los campos de conclusiones no tienen la misma cantidad de elementos.");
         }
-        $CODE_REFERENCIA  = codAleatorio();*/
-        
-        
-        for ($i=0; $i < count($NOMBRE_DES); $i++){
-        
-        $InserData =("INSERT INTO aprendices_destacados (acta_des,nombre_des,apellido_des) VALUES ('".$ACTA_DES[$i]."','".$NOMBRE_DES[$i]."','".$APELLIDO_DES[$i]."')");
-        $resultadoInsertUser = mysqli_query($con, $InserData);
-          
-          }
-        
-          header("location:?c=vistas&a=ConsultarFicha");
-    }
 
-public function insertarConclusiones(){
-    $usuario        = "root";
-    $password       = "";
-    $servidor       = "localhost";
-    $basededatos    = "acta_completas";
-    $con            = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
-    $db             = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
-    
-    $C_CONTADOR      = $_REQUEST['c_contador'];
-    $FICHA      = $_REQUEST['n_ficha'];
-    $N_ACTA      = $_REQUEST['q_acta'];
-    $APRENDIZ       = $_REQUEST['Aprendiz'];
-    $MEDIDA    = $_REQUEST['medida'];
-    $DESCRIPCION_M         = $_REQUEST['descripcion_m'];
-    $CUMPLIMIENTO         = $_REQUEST['cumplimiento'];
-    
-    
-    /*function codAleatorio($length = 5) {
-        return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    }
-    $CODE_REFERENCIA  = codAleatorio();*/
-    
-    
-    for ($i=0; $i < count($APRENDIZ); $i++){
-    
-    $InserData =("INSERT INTO conclusiones (c_contador,n_ficha, q_acta, Aprendiz,medida,descripcion_m,cumplimiento) VALUES ('".$C_CONTADOR[$i]."','".$FICHA[$i]."','".$N_ACTA[$i]."','".$APRENDIZ[$i]."','".$MEDIDA[$i]."','".$DESCRIPCION_M[$i]."','".$CUMPLIMIENTO[$i]."')");
-    $resultadoInsertUser = mysqli_query($con, $InserData);
-      
-      }
-    
-      header("location:?c=vistas&a=ConsultarFicha");
-}
-public function insertarDesarrolloComite(){
-    $usuario        = "root";
-    $password       = "";
-    $servidor       = "localhost";
-    $basededatos    = "acta_completas";
-    $con            = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
-    $db             = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
-    
-    $D_ACTA    = $_REQUEST['d_acta'];
-    $D_NOMBRE_APRENDIZ      = $_REQUEST['d_nombre_aprendiz'];
-    $D_DESCARGOS_ITS      = $_REQUEST['d_descargos_its'];
-    $D_DESCARGOS_ITS_B      = $_REQUEST['d_descargos_its_b'];
-    $D_DESCARGOS_ITS_C   = $_REQUEST['d_descargos_its_c'];
-    $D_DESCARGOS_APRENDIZ         = $_REQUEST['d_descargos_aprendiz'];
-    
-    
-    /*function codAleatorio($length = 5) {
-        return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    }
-    $CODE_REFERENCIA  = codAleatorio();*/
-    
-    
-    for ($i=0; $i < count($D_NOMBRE_APRENDIZ); $i++){
-    
-    $InserData =("INSERT INTO desarrollo_comite (d_acta, d_nombre_aprendiz, d_descargos_its, d_descargos_its_b, d_descargos_its_c, d_descargos_aprendiz) VALUES ('".$D_ACTA[$i]."','".$D_NOMBRE_APRENDIZ[$i]."','".$D_DESCARGOS_ITS[$i]."','".$D_DESCARGOS_ITS_B[$i]."','".$D_DESCARGOS_ITS_C[$i]."','". $D_DESCARGOS_APRENDIZ[$i]."')");
-    $resultadoInsertUser = mysqli_query($con, $InserData);
-      
-      }
-    
-      header("location:?c=vistas&a=ConsultarFicha");
-}
+        $query = "INSERT INTO conclusiones (
+            c_contador, n_ficha, n_acta, Aprendiz, tipo_con, documento_con, medida, descripcion_m, cumplimiento
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        $stmt = $this->PDO->prepare($query);
+
+        for ($i = 0; $i < $num_items; $i++) {
+
+            // Validar campos obligatorios
+            if (
+                empty(trim($Aprendiz[$i])) ||
+                empty(trim($tipo_con[$i])) || 
+                empty(trim($documento_con[$i])) ||
+                empty(trim($medida[$i])) ||
+                empty(trim($n_ficha[$i]))
+            ) {
+                error_log("⚠️ Faltan datos obligatorios en la conclusión #" . ($i + 1));
+                continue;
+            }
+
+            // Usar nombres de variables distintos para evitar sobrescribir los arrays
+            $aprendiz      = trim(strip_tags($Aprendiz[$i]));
+            $tipo_val      = trim(strip_tags($tipo_con[$i]));
+            $documento_val = trim(strip_tags($documento_con[$i]));
+            $medida_val    = trim(strip_tags($medida[$i]));
+            $descripcion   = trim(strip_tags($descripcion_m[$i] ?? ''));
+            $cumplim_val   = trim(strip_tags($cumplimiento[$i] ?? ''));
+            $contador      = (int) ($c_contador[$i] ?? 0);
+            $ficha         = (int) ($n_ficha[$i] ?? 0);
+            $acta          = (int) $n_acta;
+
+            $stmt->execute([
+                $contador,
+                $ficha,
+                $acta,
+                $aprendiz,
+                $tipo_val,
+                $documento_val,
+                $medida_val,
+                $descripcion,
+                $cumplim_val
+            ]);
+        }
+
+        return true;
+
+    } catch (Exception $e) {
+        error_log("❌ Error al insertar conclusiones: " . $e->getMessage());
+        return false;
+    }
+}
 
 
 public function insertarCasosAnteriores(){
@@ -320,12 +367,6 @@ public function insertarCasosAnteriores(){
     $A_CUMPLIMIENTO         = $_REQUEST['A_cumplimiento'];
     
     
-    /*function codAleatorio($length = 5) {
-        return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    }
-    $CODE_REFERENCIA  = codAleatorio();*/
-    
-    
     for ($i=0; $i < count($A_APRENDIZ); $i++){
     
     $InserData =("INSERT INTO  casos_anteriores (A_ficha,A_contador,A_acta,A_aprendiz,A_medida,A_descripcion,A_cumplimiento) VALUES ('".$A_FICHA[$i]."','".$A_CONTADOR[$i]."','".$A_ACTA[$i]."','".$A_APRENDIZ[$i]."','".$A_MEDIDA[$i]."','".$A_DESCRIPCION[$i]."','".$A_CUMPLIMIENTO[$i]."')");
@@ -335,27 +376,18 @@ public function insertarCasosAnteriores(){
     
       header("location:?c=vistas&a=ConsultarFicha");
 }
-/*fin prueba*/
-
-/*inicio prueba2*/
 
 
-/*fin prueba2*/
-
-
-public function Listarusu(){
-    try{
-         $consulta=$this->PDO->prepare("SELECT * FROM usuario;");
+public function Listarusu() {
+    try {
+        $consulta = $this->PDO->prepare("SELECT * FROM usuario;");
         $consulta->execute();
-        return $consulta->fetchALL(PDO::FETCH_OBJ);
-    }catch(Exception $e){
-        die($e->getMessage());
+        return $consulta->fetchAll(PDO::FETCH_OBJ);
+    } catch (Exception $e) {
+        error_log($e->getMessage()); // Registrar el error
+        return []; // Retornar un array vacío en caso de error
     }
-
 }
-
-
-
 
 
 public function estados($id)
@@ -371,20 +403,27 @@ public function estados($id)
         die ($e->getMessage());
     }
 }
+public function listUnic($n_ficha) {
+    try {
+        $stm = $this->PDO->prepare("SELECT n_acta, ficha, fecha, acta_contador FROM acta WHERE ficha = ?");
+        $stm->execute([$n_ficha]);
 
+        $result = [];
+        while ($row = $stm->fetch(PDO::FETCH_OBJ)) {
+            $obj = new Acta();
+            $obj->setN_acta($row->n_acta);
+            $obj->setFicha($row->ficha);
+            $obj->setFecha($row->fecha);
+            $obj->setActa_contador($row->acta_contador);
+            $result[] = $obj;
+        }
+        return $result;
 
-
-public function listUnic($id)
-{
-    try{ 
-        
-        $query = $this->PDO->prepare("SELECT * FROM acta where  ficha = $id");
-        $query->execute(array($id));
-        return $query->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-    }catch (Exception $e){
-        die ($e->getMessage());
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
 }
+
 
 public function ListarPrograma(){
     try{
@@ -462,133 +501,317 @@ public function ListarFicha(){
 
 
 
-
-
-
-
-public function Obtener($id){
-    try{
-         $consulta=$this->PDO->prepare("SELECT * FROM acta where n_acta=?;");
+public function Obtener($id) {
+    try {
+        $consulta = $this->PDO->prepare("SELECT * FROM acta WHERE n_acta = ?;");
         $consulta->execute(array($id));
-       $r= $consulta->fetch(PDO::FETCH_OBJ);
-       $p= new acta();
-       $p ->setN_acta($r->n_acta);
-       $p ->setActa_no($r->acta_no);
-       $p ->setNom_rev($r->nom_rev);
-       $p ->setCiudad($r->ciudad);
-       $p ->setFecha($r->fecha);
-       $p ->setHora_fin($r->hora_fin);
-       $p ->setHora_in($r->hora_in);
-       $p ->setLu_en($r->lu_en);
-       $p ->setDireccion($r->direccion);
-       $p ->setAgenda($r->agenda);
-       $p ->setObjetivos($r->objetivos);
-       /*$p ->setParticipantes($r->participantes);*/
-       /*$p ->setInf_ficha($r->inf_ficha);*/
-       $p ->setCasos_ant($r->casos_ant);
-       $p ->setCasos_part($r->casos_part);
-       $p ->setHechos_actuales($r->hechos_actuales);
-       $p ->setDesarrollo($r->desarrollo);
-       $p ->setInforme_vocero($r->informe_vocero);
-       $p ->setConclusion($r->conclusion);
-       $p ->setFicha($r->ficha);
-       $p ->setPrograma($r->programa);
-       $p ->setPrivacidad($r->privacidad);
-     return $p;
+        $r = $consulta->fetch(PDO::FETCH_OBJ);
+        if ($r) {
+            $p = new acta();
+            $p->setN_acta($r->n_acta);
+            // ... (resto de los setters)
+            return $p;
+        }
+        return null; // Retornar null si no se encuentra el registro
+    } catch (Exception $e) {
+        error_log($e->getMessage()); // Registrar el error
+        return null; // Retornar null en caso de error
+    }
+}
+
+public function insertarCompromisos($n_acta) {
+    try {
+        // Verificar si los datos están presentes
+        if (empty($_POST['actividad']) || empty($_POST['responsable'])) {
+            throw new Exception("Los compromisos enviados son incompletos.");
+        }
+
+        // Iterar sobre las actividades y responsables recibidos
+        foreach ($_POST['actividad'] as $index => $actividad) {
+            $responsable = $_POST['responsable'][$index] ?? null;
+
+            // Validar que ambos campos sean obligatorios
+            if (empty($actividad) || empty($responsable)) {
+                throw new Exception("Faltan datos en la fila {$index}. Actividad y responsable son obligatorios.");
+            }
+
+            // Insertar cada compromiso en la base de datos
+            $query = "INSERT INTO compromisos (n_acta, actividad, responsable) VALUES (?, ?, ?)";
+            $stmt = $this->PDO->prepare($query);
+            $stmt->execute([$n_acta, $actividad, $responsable]);
+
+            error_log("Compromiso insertado: Actividad={$actividad}, Responsable={$responsable}, Acta={$n_acta}");
+        }
+    } catch (Exception $e) {
+        // Manejar errores
+        throw new Exception("Error al insertar los compromisos: " . $e->getMessage());
+    }
+}
 
 
-    }catch(Exception $e){
-        die($e->getMessage());
+public function insertarParticipantes($n_acta) {
+    try {
+        // Validación de campos obligatorios
+        if (empty($this->nombre)) {
+            throw new Exception("El campo 'nombre' del participante es obligatorio.");
+        }
+        if (empty($this->cargo)) {
+            throw new Exception("El campo 'cargo' del participante es obligatorio.");
+        }
+        if (empty($this->asistencia)) {
+            throw new Exception("El campo 'asistencia' del participante es obligatorio.");
+        }
+
+        // Preparar consulta
+        $query = "INSERT INTO participantes (nombre, cargo, asistencia, n_acta) VALUES (?, ?, ?, ?)";
+        $stmt = $this->PDO->prepare($query);
+        $stmt->execute([
+            $this->nombre,
+            $this->cargo,
+            $this->asistencia,
+            $n_acta
+        ]);
+
+        return $this; // Permite el encadenamiento o verificación
+
+    } catch (Exception $e) {
+        error_log("Error al insertar participante en acta $n_acta: " . $e->getMessage());
+        throw new Exception("Error al insertar participante: " . $e->getMessage());
+    }
+}
+
+public function insertarDesarrolloComite($n_acta)
+{
+    if (!isset($_POST['d_nombre_aprendiz'])) {
+        return ['success' => false, 'message' => 'Error: Datos incompletos en el formulario.'];
     }
 
+    $PDO = $this->PDO;
+
+    $nombres = $_POST['d_nombre_aprendiz'];
+    $descargos_its = $_POST['d_descargos_its'];
+    $descargos_its_b = $_POST['d_descargos_its_b'];
+    $descargos_its_c = $_POST['d_descargos_its_c'];
+    $descargos_its_d = $_POST['d_descargos_its_d'];
+    $descargos_aprendiz = $_POST['d_descargos_aprendiz'];
+    $medida_formativa_comite = $_POST['medida_formativa_comite'];
+    $inf_jefe_taller = $_POST['inf_jefe_taller'];
+    $inf_instructores = $_POST['inf_instructores'];
+
+    $numFilas = count($nombres);
+    if (
+        $numFilas !== count($descargos_its) || $numFilas !== count($descargos_its_b) ||
+        $numFilas !== count($descargos_its_c) || $numFilas !== count($descargos_its_d) ||
+        $numFilas !== count($descargos_aprendiz) || $numFilas !== count($medida_formativa_comite) ||
+        $numFilas !== count($inf_jefe_taller) || $numFilas !== count($inf_instructores)
+    ) {
+        return ['success' => false, 'message' => 'Error: Los datos enviados no coinciden en tamaño.'];
+    }
+
+    // Obtener el último valor de d_acta para ese n_acta
+    $sqlContador = "SELECT MAX(d_acta) AS max_d_acta FROM desarrollo_comite WHERE n_acta = ?";
+    $stmtContador = $PDO->prepare($sqlContador);
+    $stmtContador->execute([$n_acta]);
+    $resultado = $stmtContador->fetch(PDO::FETCH_ASSOC);
+    $ultimo_d_acta = $resultado['max_d_acta'] ?? 0;
+
+    // Consulta de inserción
+    $sql = "INSERT INTO desarrollo_comite 
+            (n_acta, d_acta, d_nombre_aprendiz, d_descargos_its, d_descargos_its_b, d_descargos_its_c, d_descargos_its_d, d_descargos_aprendiz, medida_formativa_comite, inf_jefe_taller, inf_instructores) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $PDO->prepare($sql);
+
+    try {
+        for ($i = 0; $i < $numFilas; $i++) {
+            if (trim($nombres[$i]) === '') {
+                return ['success' => false, 'message' => 'Error: Datos incompletos en sección desarrollo comité en fila ' . ($i + 1)];
+            }
+
+            $d_acta = $ultimo_d_acta + $i + 1; // Incremental dentro de este n_acta
+
+            $stmt->execute([
+                $n_acta,
+                $d_acta,
+                $nombres[$i],
+                $descargos_its[$i],
+                $descargos_its_b[$i],
+                $descargos_its_c[$i],
+                $descargos_its_d[$i],
+                $descargos_aprendiz[$i],
+                $medida_formativa_comite[$i],
+                $inf_jefe_taller[$i],
+                $inf_instructores[$i]
+            ]);
+        }
+
+        return ['success' => true];
+    } catch (PDOException $e) {
+        return ['success' => false, 'message' => 'Error SQL: ' . $e->getMessage()];
+    }
 }
-
-
-
-public function insertarparticipantes()
-{
-    try{
-    $query = "INSERT INTO participantes (nombres,apellidos,cargo,asistencia) VALUES (?,?,?,?);";
-    $this -> PDO-> prepare($query)
-                        ->execute(array(
-                            $this->nombres,
-                            $this->apellidos,
-                            $this->cargo,
-                            $this->asistencia
-                           
-                        ));
-                        $this->n_acta=$this->PDO->lastInsertId();
-                        return $this;
-                    }catch(Exception $e){
-                        die($e->getMessage());
-                    }
-                        
-}
-
-
-
 
 public function insertar()
 {
-    try{
-    $query = "INSERT INTO acta (acta_no,acta_contador,nom_rev,ciudad,fecha,hora_in,hora_fin,lu_en,direccion,agenda,objetivos,inf_ficha,casos_ant,casos_part,hechos_actuales,desarrollo,informe_vocero,conclusion,ficha,programa,privacidad) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-    $this -> PDO-> prepare($query)
-                        ->execute(array(
-                            $this->acta_no,
-                            $this->acta_contador,
-                            $this->nom_rev,
-                            $this->ciudad,
-                            $this->fecha,
-                            $this->hora_in,
-                            $this->hora_fin,
-                            $this->lu_en,
-                            $this->direccion,
-                            $this->agenda,
-                            $this->objetivos,
-                            $this->inf_ficha,
-                            $this->casos_ant,
-                            $this->casos_part,
-                            $this->hechos_actuales,
-                            $this->desarrollo,
-                            $this->informe_vocero,
-                            $this->conclusion,
-                            $this->ficha,
-                            $this->programa,
-                            $this->privacidad
-                        ));
-                        $this->n_acta=$this->PDO->lastInsertId();
-                        return $this;
+    try {
+        $this->PDO->beginTransaction();
 
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-                        
-                            $query = "INSERT INTO participantes (nombres,apellidos,cargo,asistencia) VALUES (?,?,?,?);";
-                            $this -> PDO-> prepare($query)
-                                                ->execute(array(
-                                                    $this->nombres,
-                                                    $this->apellidos,
-                                                    $this->cargo,
-                                                    $this->asistencia
-                                                   
-                                                ));
-                                                $this->n_acta=$this->PDO->lastInsertId();
-                                                return $this;
-                                            
+        $obligatorios = ['acta_no', 'fecha', 'ficha', 'programa'];
+        foreach ($obligatorios as $campo) {
+            if (empty($post[$campo])) {
+                throw new Exception("El campo obligatorio '$campo' está vacío.");
+            }
+        }
 
+        $this->acta_no        = $post['acta_no'];
+        $this->nom_rev        = $post['nom_rev'] ?? null;
+        $this->ciudad         = $post['ciudad'] ?? null;
+        $this->fecha          = $post['fecha'];
+        $this->hora_in        = $post['hora_in'] ?? null;
+        $this->hora_fin       = $post['hora_fin'] ?? null;
+        $this->lu_en          = $post['lu_en'] ?? null;
+        $this->direccion      = $post['direccion'] ?? null;
+        $this->agenda         = $post['agenda'] ?? null;
+        $this->objetivos      = $post['objetivos'] ?? null;
+        $this->inf_ficha      = $post['inf_ficha'] ?? null;
+        $this->hechos_actuales = $post['hechos_actuales'] ?? null;
+        $this->informe_vocero = $post['informe_vocero'] ?? null;
+        $this->informe_subvocero = $post['informe_subvocero'] ?? null;
+        $this->ficha          = $post['ficha'];
+        $this->programa       = $post['programa'];
+        $this->privacidad     = $post['privacidad'] ?? null;
 
-                    }catch(Exception $e){
-                        die($e->getMessage());
-                    }
-                        
+        // ✅ Calcular correctamente acta_contador según número de ficha
+        $stmt = $this->PDO->prepare("SELECT COUNT(*) FROM acta WHERE ficha = ?");
+        $stmt->execute([$this->ficha]);
+        $contadorActual = (int) $stmt->fetchColumn();
+        $this->acta_contador = $contadorActual + 1;
+
+        // Insertar ACTA
+        $stmt = $this->PDO->prepare("INSERT INTO acta (
+            acta_no, acta_contador, nom_rev, ciudad, fecha, hora_in, hora_fin, lu_en, direccion, agenda, 
+            objetivos, inf_ficha, hechos_actuales, informe_vocero, informe_subvocero, ficha, programa, privacidad
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->execute([
+            $this->acta_no, $this->acta_contador, $this->nom_rev, $this->ciudad, $this->fecha,
+            $this->hora_in, $this->hora_fin, $this->lu_en, $this->direccion, $this->agenda,
+            $this->objetivos, $this->inf_ficha, $this->hechos_actuales, $this->informe_vocero, $this->informe_subvocero, $this->ficha,
+            $this->programa, $this->privacidad
+        ]);
+
+        $this->n_acta = $this->PDO->lastInsertId();
+
+        // PARTICIPANTES
+        if (!empty($post['nombre'])) {
+            foreach ($post['nombre'] as $i => $nombre) {
+                if (
+                    empty(trim($nombre)) ||
+                    empty(trim($post['cargo'][$i] ?? '')) ||
+                    empty(trim($post['asistencia'][$i] ?? ''))
+                ) {
+                    throw new Exception("Participante incompleto en fila" . ($i + 1));
+                }
+
+                $this->nombre     = $nombre;
+                $this->cargo      = $post['cargo'][$i];
+                $this->asistencia = $post['asistencia'][$i];
+                $this->insertarParticipantes($this->n_acta);
+            }
+        }
+
+        // COMPROMISOS
+        if (!empty($post['actividad']) && !empty($post['responsable'])) {
+            $this->insertarCompromisos($this->n_acta);
+        }
+
+        // DESARROLLO COMITÉ
+        $resDesarrollo = $this->insertarDesarrolloComite($this->n_acta);
+        if (!$resDesarrollo['success']) {
+            throw new Exception($resDesarrollo['message']);
+        }
+
+        // CONCLUSIONES
+        $Aprendiz       = $post['Aprendiz'] ?? [];
+        $tipo_con       = $post['tipo_con'] ?? [];
+        $documento_con  = $post['documento_con'] ?? [];
+        $medida         = $post['medida'] ?? [];
+        $descripcion_m  = $post['descripcion_m'] ?? [];
+        $cumplimiento   = $post['cumplimiento'] ?? [];
+        $c_contador     = $post['c_contador'] ?? [];
+        $n_ficha        = $post['n_ficha'] ?? [];
+
+        $this->insertarConclusiones(
+            $this->n_acta,
+            $Aprendiz,
+            $tipo_con,
+            $documento_con,
+            $medida,
+            $descripcion_m,
+            $cumplimiento,
+            $c_contador,
+            $n_ficha
+        );
+
+        // CASOS ESPECIALES
+        $campos_especiales = ['nombre_aprendiz', 'tipo', 'documento', 'nombre_its', 'description', 'falta', 'reglamento', 'cla_falta'];
+        $arrays = [];
+
+        foreach ($campos_especiales as $campo) {
+            $arrays[$campo] = $post[$campo] ?? [];
+        }
+
+        $cant_filas = count($arrays['nombre_aprendiz']);
+        $longitudes_validas = array_reduce($arrays, fn($carry, $arr) => $carry && (count($arr) === $cant_filas), true);
+
+        if ($longitudes_validas && $cant_filas > 0) {
+            $this->insertarCasosEspeciales(
+                $arrays['nombre_aprendiz'],
+                $arrays['tipo'],
+                $arrays['documento'],
+                $arrays['nombre_its'],
+                $arrays['description'],
+                $arrays['falta'],
+                $arrays['reglamento'],
+                $arrays['cla_falta']
+            );
+        } else {
+            error_log("⚠️ Datos incompletos o mal formateados en casos especiales.");
+        }
+
+        $this->PDO->commit();
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Acta registrada con éxito.',
+            'n_acta' => $this->n_acta,
+            'ficha' => $this->ficha,
+            'acta_contador' => $this->acta_contador
+        ]);
+        
+        
+        exit;
+
+    } catch (Exception $e) {
+        $this->PDO->rollBack();
+        error_log("❌ Error al guardar acta: " . $e->getMessage());
+        echo json_encode([
+            "success" => false,
+            "message" => "Error: " . $e->getMessage()
+        ]);
+        exit;
+    }
 }
 
-public function Eliminar($id){
-    try{
-        $consulta="DELETE FROM acta WHERE n_acta=?;";
-        $this->PDO->prepare($consulta)
-                ->execute(array($id));
-    }catch(Exception$e){
-        die($e->getMessage());
-   }
+
+public function Eliminar($id) {
+    try {
+        $consulta = "DELETE FROM acta WHERE n_acta = ?;";
+        $this->PDO->prepare($consulta)->execute(array($id));
+    } catch (Exception $e) {
+        error_log($e->getMessage()); // Registrar el error
+    }
 }
 
 public function ListarActas(){
@@ -604,36 +827,37 @@ public function ListarActas(){
 
 
 
-public function Obtenercontenido($id){
-    try{
+public function Obtenercontenido($id)
+{
+    try {
+        // Preparar y ejecutar la consulta
+        $consulta = $this->PDO->prepare("SELECT * FROM ficha WHERE id_ficha = ?;");
+        $consulta->execute([$id]);
+        $r = $consulta->fetch(PDO::FETCH_OBJ);
 
+        if ($r) { // Verificar si se encontraron resultados
+            $p = new ficha();
+            $p->setId_ficha($r->id_ficha);
+            $p->setN_ficha($r->N_ficha);
+            $p->setCantidad_apre($r->cantidad_apre);
+            $p->setPrograma($r->programa);
+            $p->setJornada($r->jornada);
+            $p->setTipo_forma($r->tipo_forma);
+            $p->setFecha_inicio($r->fecha_inicio);
+            $p->setFecha_fin($r->fecha_fin);
 
-
-      
-
-         $consulta=$this->PDO->prepare("SELECT * FROM ficha where id_ficha=?;");
-        $consulta->execute(array($id));
-      $r= $consulta->fetch(PDO::FETCH_OBJ);
-       $p= new ficha();
- 
-
-       $p ->setId_ficha($r->id_ficha);
-       $p ->setN_ficha($r->N_ficha);
-       $p ->setCantidad_apre($r->cantidad_apre);
-       $p ->setPrograma($r->programa);
-       $p ->setJornada($r->jornada);
-       $p ->setTipo_forma($r->tipo_forma);
-       $p ->setFecha_inicio($r->fecha_inicio);
-       $p ->setFecha_fin($r->fecha_fin);
-    
-     return $p ;
-     echo($contador);
-
-    }catch(Exception $e){
-        die($e->getMessage());
+            return $p;
+        } else {
+            // Manejo en caso de que no se encuentren resultados
+            throw new Exception("No se encontraron datos para la ficha con ID: " . htmlspecialchars($id));
+        }
+    } catch (Exception $e) {
+        // Registrar el error (opcional)
+        error_log("Error en Obtenercontenido: " . $e->getMessage());
+        return null; // Retornar un valor nulo en caso de error
     }
-
 }
+
 
 
 
@@ -650,6 +874,22 @@ public function ObtenerParticipantes($ficha){
         die ($e->getMessage());
     }
 }
+
+public function ObtenerCompromisos($n_acta)
+{
+    try {
+        // Preparar la consulta para obtener los compromisos relacionados con un acta
+        $query = $this->PDO->prepare("SELECT * FROM compromisos WHERE n_acta = ?");
+        $query->execute(array($n_acta));
+        
+        // Retornar los resultados como una lista de objetos de la clase actual
+        return $query->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    } catch (Exception $e) {
+        // Manejar errores y mostrar mensaje claro
+        die("Error al obtener los compromisos: " . $e->getMessage());
+    }
+}
+
 
 public function ObtenerRarr($ficha){
     try{ 
@@ -675,16 +915,19 @@ public function ObtenerCasosP($ficha){
 
 public function obtenercontador($ficha)
 {
-    try{ 
-        $contador=0;
-        $contador = $this->PDO->prepare("SELECT acta_contador FROM acta WHERE ficha= $ficha ORDER BY n_acta DESC LIMIT 1;");
-        $contador->execute(array($ficha));
-        return $contador->fetch(PDO::FETCH_OBJ);
+    try { 
+        $sql = "SELECT acta_contador FROM acta WHERE ficha = ? ORDER BY n_acta DESC LIMIT 1";
+        $stmt = $this->PDO->prepare($sql);
+        $stmt->execute([$ficha]);
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
 
-    }catch (Exception $e){
-        die ($e->getMessage());
+        return $resultado ? $resultado->acta_contador : 0; // Retorna 0 si no hay registros
+
+    } catch (Exception $e) {
+        die("Error al obtener el contador: " . $e->getMessage());
     }
 }
+
 public function obtenercontadors($id)
 {
     try{ 
@@ -697,16 +940,46 @@ public function obtenercontadors($id)
         die ($e->getMessage());
     }
 }
-public function casosAnteriores($ficha, $acta_contador){
-    try{ 
-        
-        $query = $this->PDO->prepare("SELECT * FROM conclusiones WHERE n_ficha = $ficha AND c_contador = $acta_contador-1");
-        $query->execute(array($ficha, $acta_contador));
-        return $query->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-    }catch (Exception $e){
-        die ($e->getMessage());
+
+public function obtenerActaAnterior($ficha, $acta_contador) {
+    try {
+        error_log("Buscando el acta anterior con ficha=$ficha y acta_contador=$acta_contador-1");
+
+        $stmt = $this->PDO->prepare("SELECT n_acta FROM acta WHERE ficha = ? AND acta_contador = ?");
+        $stmt->execute([$ficha, $acta_contador - 1]);
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    } catch (Exception $e) {
+        error_log("Error en obtenerActaAnterior: " . $e->getMessage());
+        return null;
     }
 }
+
+public function obtenerConclusionesAnt($ficha) {
+    try {
+        error_log("Buscando conclusiones anteriores para ficha=$ficha, con c_contador >= 1");
+
+        $stmt = $this->PDO->prepare("
+            SELECT n_ficha, n_acta, Aprendiz, tipo_con, documento_con, medida, descripcion_m, cumplimiento
+            FROM conclusiones
+            WHERE n_ficha = ? AND c_contador IN (1, 2, 3)
+            ORDER BY c_contador DESC
+        ");
+        $stmt->execute([$ficha]);
+
+        $resultado = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if (empty($resultado)) {
+            error_log("No se encontraron registros en conclusiones para ficha: $ficha con c_contador válido.");
+        }
+
+        return $resultado;
+    } catch (Exception $e) {
+        error_log("Error en obtenerConclusiones: " . $e->getMessage());
+        return [];
+    }
+}
+
 
 public function ObtenerDestacados($ficha){
     try{ 
@@ -718,38 +991,55 @@ public function ObtenerDestacados($ficha){
         die ($e->getMessage());
     }
 }
-
-public function obtenerAnteriores($ficha, $acta_contador){
-    try{ 
-        
-        $query = $this->PDO->prepare("SELECT * FROM casos_anteriores WHERE A_ficha = $ficha AND A_contador = $acta_contador-1");
+public function obtenerActa($ficha, $acta_contador) {
+    try { 
+        $query = $this->PDO->prepare("SELECT * FROM acta WHERE ficha = ? AND acta_contador = ?");
         $query->execute(array($ficha, $acta_contador));
-        return $query->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-    }catch (Exception $e){
-        die ($e->getMessage());
+        return $query->fetch(PDO::FETCH_OBJ); // Retorna un solo acta como objeto
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
 }
 
-public function ObtenerDesarrolloComite($ficha){
-    try{ 
-        
-        $query = $this->PDO->prepare("SELECT * FROM desarrollo_comite where  d_acta = $ficha");
-        $query->execute(array($ficha));
-        return $query->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-    }catch (Exception $e){
-        die ($e->getMessage());
+
+public function ObtenerDesarrolloComite($ficha) {
+    try { 
+        // Validar que $ficha sea un número entero
+        if (!is_numeric($ficha) || intval($ficha) <= 0) {
+            throw new Exception("El valor de 'ficha' no es válido: " . htmlspecialchars($ficha));
+        }
+
+        // Preparar consulta con marcador de posición
+        $query = $this->PDO->prepare("SELECT * FROM desarrollo_comite WHERE d_acta = :ficha");
+
+        // Ejecutar consulta con el valor de ficha
+        $query->execute([':ficha' => intval($ficha)]);
+
+        // Devolver los datos como array asociativo
+        return $query->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+    } catch (Exception $e) {
+        die("Error en ObtenerDesarrolloComite: " . $e->getMessage());
     }
 }
-public function obtenerVerificacion($ficha, $acta_contador){
-    try{ 
-        
-        $query = $this->PDO->prepare("SELECT * FROM acta WHERE ficha= $ficha AND acta_contador < $acta_contador ORDER BY n_acta DESC LIMIT 1;");
-        $query->execute(array($ficha, $acta_contador));
-        return $query->fetchAll(PDO::FETCH_CLASS,__CLASS__);
-    }catch (Exception $e){
-        die ($e->getMessage());
+
+public function obtenerVerificacion($ficha) {
+    error_log("BUSCANDO acta anterior con ficha=$ficha");
+    $stmt = $this->PDO->prepare("
+        SELECT n_acta, fecha, nom_rev, ficha, programa
+        FROM acta
+        WHERE ficha = ?
+        ORDER BY acta_contador DESC
+        LIMIT 1
+    ");
+    $stmt->execute([$ficha]);
+    $result = $stmt->fetch(PDO::FETCH_OBJ);
+    if (!$result) {
+        error_log("NO SE ENCONTRÓ: ficha=$ficha");
     }
+    return $result;
 }
+
 
 public function ObtenerCont($ficha){
 
@@ -781,86 +1071,76 @@ public function ObtenerPrueba($ficha){
         die ($e->getMessage());
     }
 }
- public function ObtenerTranslado($ficha){
-
  
-
-            $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Translado FROM aprendiz WHERE ficha = $ficha  AND Estado='TRANSLADADO'");
-            $consulta->execute();
-             return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
-
-}
-
-
 public function ObtenerCancelado($ficha){
 
- 
-
-        $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Cancelado FROM aprendiz WHERE ficha = $ficha  AND Estado='CANCELADO'");
-        $consulta->execute();
-         return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
-
+    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Cancelado FROM aprendiz WHERE ficha = $ficha  AND Estado='CANCELADO'");
+    $consulta->execute();
+     return $consulta->fetch(PDO :: FETCH_OBJ);
 }
 
+public function ObtenerTrasladado($ficha){
+
+$consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Trasladado FROM aprendiz WHERE ficha = $ficha  AND Estado='CANCELADO'");
+$consulta->execute();
+ return $consulta->fetch(PDO :: FETCH_OBJ);
+}
 
 public function ObtenerFormacion($ficha){
 
-        $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Formacion FROM aprendiz WHERE ficha = $ficha  AND Estado='EN FORMACIÓN'");
-        $consulta->execute();
-         return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
+    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Formacion FROM aprendiz WHERE ficha = $ficha  AND Estado='EN FORMACIÓN'");
+    $consulta->execute();
+     return $consulta->fetch(PDO :: FETCH_OBJ);
 
 }
 
 public function ObtenerRetiro($ficha){
-
- 
-
-        $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Retiro FROM aprendiz WHERE ficha = $ficha  AND Estado='RETIRO VOLUNTARIO'");
-        $consulta->execute();
-         return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
+    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Retiro FROM aprendiz WHERE ficha = $ficha  AND Estado='RETIRO VOLUNTARIO'");
+    $consulta->execute();
+     return $consulta->fetch(PDO :: FETCH_OBJ);
 }
 
 public function ObtenerCondicionado($ficha){
-
- 
-
-    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as CONDICIONADO FROM aprendiz WHERE ficha = $ficha  AND Estado='CONDICIONADO'");
-    $consulta->execute();
-     return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
+$consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Condicionado FROM aprendiz WHERE ficha = $ficha  AND Estado='CONDICIONADO'");
+$consulta->execute();
+ return $consulta->fetch(PDO :: FETCH_OBJ);
 }
 
 public function ObtenerAplazado($ficha){
-
- 
-
-    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as APLAZADO FROM aprendiz WHERE ficha = $ficha  AND Estado='APLAZADO'");
-    $consulta->execute();
-     return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
-}
-public function ObtenerInduccion($ficha){
-
- 
-
-    $consulta=$this->PDO->prepare("SELECT COUNT(Estado) as INDUCCION FROM aprendiz WHERE ficha = $ficha  AND Estado='INDUCCIÓN'");
-    $consulta->execute();
-     return $consulta->fetch(PDO :: FETCH_OBJ);
-
-
+$consulta=$this->PDO->prepare("SELECT COUNT(Estado) as Aplazado FROM aprendiz WHERE ficha = $ficha  AND Estado='APLAZADO'");
+$consulta->execute();
+ return $consulta->fetch(PDO :: FETCH_OBJ);
 }
 
-//
+public function ObtenerInformeVocero($ficha) {
+    try {
+        $consulta = $this->PDO->prepare("SELECT * FROM informe_vocero WHERE ficha = :ficha");
+        $consulta->bindParam(':ficha', $ficha, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_OBJ);
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
+}
+
+public function ObtenerInformeSubvocero($ficha) {
+    try {
+        $consulta = $this->PDO->prepare("SELECT * FROM informe_subvocero WHERE ficha = :ficha");
+        $consulta->bindParam(':ficha', $ficha, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_OBJ);
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
+}
+
+public function setHechos_actuales($hechos_actuales) {
+    $this->hechos_actuales = $hechos_actuales;
+}
+
+public function getHechos_actuales() {
+    return $this->hechos_actuales;
+}
 
 public function getActa_no()
 {
@@ -1039,6 +1319,18 @@ public function setParticipantes($participantes)
     return $this;
 }
 
+public function getCompromisos()
+{
+    return $this->compromisos;
+}
+
+
+public function setCompromisos($compromisos)
+{
+    $this->compromisos = $compromisos;
+
+    return $this;
+}
 
 
 public function getInf_ficha()
@@ -1083,29 +1375,15 @@ public function setCasos_part($casos_part)
     return $this;
 }
 
-
-public function getHechos_actuales()
+public function getDesarrollo_comite()
 {
-    return $this->hechos_actuales;
+    return $this->desarrollo_comite;
 }
 
 
-public function setHechos_actuales($hechos_actuales)
+public function setDesarrollo_comite($desarrollo_comite)
 {
-    $this-> hechos_actuales = $hechos_actuales;
-
-    return $this;
-}
-
-public function getDesarrollo()
-{
-    return $this->desarrollo;
-}
-
-
-public function setDesarrollo($desarrollo)
-{
-    $this-> desarrollo = $desarrollo;
+    $this-> desarrollo_comite = $desarrollo_comite;
 
     return $this;
 }
@@ -1123,15 +1401,27 @@ public function setInforme_vocero($informe_vocero)
     return $this;
 }
 
-
-public function getConclusion()
+public function getInforme_subvocero()
 {
-    return $this->conclusion;
+    return $this->informe_subvocero;
 }
 
-public function setConclusion($conclusion)
+
+public function setInforme_subvocero($informe_subvocero)
 {
-    $this->conclusion = $conclusion;
+    $this-> informe_subvocero = $informe_subvocero;
+
+    return $this;
+}
+
+public function getConclusiones()
+{
+    return $this->conclusiones;
+}
+
+public function setConclusiones($conclusiones)
+{
+    $this->conclusiones = $conclusiones;
 
     return $this;
 }
@@ -1167,7 +1457,7 @@ public function setPrograma($programa)
 
 public function getNombre()
 {
-    return $this->nombre;
+    return $this->nombre;                            
 }
 
 public function setNombre($nombre)
@@ -1260,6 +1550,65 @@ public function setNombre_aprendiz($nombre_aprendiz)
     return $this;
 }
 
+public function getTipo()
+{
+    return $this->tipo;
+}
+
+public function setTipo($tipo)
+{
+    $this->tipo = $tipo;
+
+    return $this;
+}
+
+public function getDocumento()
+{
+    return $this->documento;
+}
+
+public function setDocumento($documento)
+{
+    $this->documento = $documento;
+
+    return $this;
+}
+
+public function getC_contador()
+{
+    return $this->c_contador;
+}
+
+public function setC_contador($c_contador)
+{
+    $this->c_contador = $c_contador;
+
+    return $this;
+}
+
+public function getTipo_con()
+{
+    return $this->tipo_con;
+}
+
+public function setTipo_con($tipo_con)
+{
+    $this->tipo_con = $tipo_con;
+
+    return $this;
+}
+
+public function getDocumento_con()
+{
+    return $this->documento_con;
+}
+
+public function setDocumento_con($documento_con)
+{
+    $this->documento_con = $documento_con;
+
+    return $this;
+}
 
 
 public function getNombre_its()
@@ -1311,42 +1660,18 @@ public function setReglamento($reglamento)
     return $this;
 }
 
-public function getReglamento_a()
+public function getCla_falta()
 {
-    return $this->reglamento_a;
+    return $this->cla_falta;
 }
 
-public function setReglamento_a($reglamento_a)
+public function setCla_falta($cla_falta)
 {
-    $this->reglamento_a = $reglamento_a;
-
-    return $this;
-}
-public function getReglamento_b()
-{
-    return $this->reglamento_b;
-}
-
-public function setReglamento_b($reglamento_b)
-{
-    $this->reglamento_b = $reglamento_b;
+    $this->cla_falta = $cla_falta;
 
     return $this;
 }
 
-public function getReglamento_c()
-{
-    return $this->reglamento_c;
-}
-
-public function setReglamento_c($reglamento_c)
-{
-    $this->reglamento_c = $reglamento_c;
-
-    return $this;
-}
-
-/*conclusiones*/
 public function getNf_ficha()
 {
     return $this->n_ficha;
@@ -1655,7 +1980,41 @@ public function setD_descargos_aprendiz($d_descargos_aprendiz)
     return $this;
 }
 
+public function getMedida_formativa_comite()
+{
+    return $this->medida_formativa_comite;
+}
 
+public function setMedida_formativa_comite($medida_formativa_comite)
+{
+    $this->medida_formativa_comite = $medida_formativa_comite;
+
+    return $this;
+}
+
+public function getInf_jefe_taller()
+{
+    return $this->inf_jefe_taller;
+}
+
+public function setInf_jefe_taller($inf_jefe_taller)
+{
+    $this->inf_jefe_taller = $inf_jefe_taller;
+
+    return $this;
+}
+
+public function getInf_instructores()
+{
+    return $this->inf_instructores;
+}
+
+public function setInf_instructores($inf_instructores)
+{
+    $this->inf_instructores = $inf_instructores;
+
+    return $this;
+}
 /*rar*/
 public function getId_rar()
 {
@@ -1707,7 +2066,6 @@ public function setFname($fname)
 
     return $this;
 }
-
 
 
 public function getName()

@@ -53,15 +53,15 @@
   <label for="">Tipo documento:</label>
   <select name="Tipo" id='Tipo' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Modalidad">
   <option selected>Tipo</option>
-  <option value="CC">CC</option>
-  <option value="TI">TI</option>
-  <option value="CE">CE</option>
-  <option value="TE">TE</option>
-  <option value="PAS">PAS</option>
+  <option value="C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="CE">C.E</option>
+  <option value="T.E">T.E</option>
+  <option value="CE">P.P.T</option>
+  <option value="P.A.S">P.A.S</option>
 
   </select>
 </div>
-
 <div class="col">
 <label for="">Documento:</label>
   <input name="Numero" id='Numero' type="number" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="documento">
@@ -78,6 +78,7 @@
   <select name="Estado" id='Estado' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Estado de formación">
   <option selected> Seleccione el estado del aprendiz</option>
   <option value="EN FORMACIÓN">EN FORMACIÓN</option>
+  <option value="INDUCCIÓN">INDUCCIÓN</option>
   <option value="TRANSLADADO">TRANSLADADO</option>
   <option value="CANCELADO">CANCELADO</option>
   <option value="RETIRO VOLUNTARIO">RETIRO VOLUNTARIO</option>

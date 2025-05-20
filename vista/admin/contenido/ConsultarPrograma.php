@@ -1,55 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Aprendices</title>
-    <!-- Importar Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div id="content">
-        <br>
-        <center><h1>Aprendices</h1></center>
-        <div class="card">
-            <div class="card-body">
-                <br>
-                <table class="table" id="tabla">
-                    <thead class="thead-dark">
+<div id="content">
+    <br>
+    <center>
+        <h1>Programa</h1>
+    </center>
+      <!-- Importar Font Awesome -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <div class="card">
+        <div class="card-body">
+            <br>
+            <table class="table" id="tabla">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre Programa</th>
+                        <th scope="col"> <i class="fa-solid fa-gear"></i> Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->modelo->ListarPrograma() as $r): ?>
                         <tr>
-                            <th scope="col"><i class="fa-solid fa-id-card"></i> Ficha</th>
-                            <th scope="col"><i class="fa-solid fa-file-alt"></i> Tipo</th>
-                            <th scope="col"><i class="fa-solid fa-id-badge"></i> Documento</th>
-                            <th scope="col"><i class="fa-solid fa-user"></i> Nombre</th>
-                            <th scope="col"><i class="fa-solid fa-user"></i> Apellido</th>
-                            <th scope="col"><i class="fa-solid fa-envelope"></i> Correo</th>
-                            <th scope="col"><i class="fa-solid fa-toggle-on"></i> Estado</th>
-                            <th scope="col"><i class="fa-solid fa-pen"></i> Editar</th>
-                            <th scope="col"><i class="fa-solid fa-trash-can"></i> Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($this->modelo->ListarApre() as $r): ?>
-                        <tr>
-                            <td><?= $r->ficha ?></td>
-                            <td><?= $r->Tipo ?></td>
-                            <td><?= $r->Numero ?></td>
-                            <td><?= $r->Nombre_aprendiz ?></td>
-                            <td><?= $r->Apellido_aprendiz ?></td>
-                            <td><?= $r->Correo ?></td>
-                            <td><?= $r->Estado ?></td>
+                            <td><?= htmlspecialchars($r->programa) ?></td>
                             <td>
                                 <!-- Botón para editar -->
-                                <a href="?c=Aprendiz&a=FormCrear&id=<?= $r->id_aprendiz ?>" 
+                                <a href="?c=programa&a=EditPrograma&id_programa=<?= $r->id_programa ?>" 
                                    class="btn btn-success" 
                                    style="background-color: #39A900;" 
                                    title="Editar">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                            </td>
-                            <td>
-                                <!-- Botón para eliminar -->
-                                <a href="?c=aprendiz&a=BorrarApre&id_aprendiz=<?= $r->id_aprendiz ?>" 
+                                <!-- Botón para eliminar con confirmación -->
+                                <a href="javascript:void(0);" 
+                                   onclick="confirmarEliminacion(<?= $r->id_programa ?>)" 
                                    class="btn btn-danger" 
                                    style="background-color: #39A900;" 
                                    title="Eliminar">
@@ -57,35 +38,33 @@
                                 </a>
                             </td>
                         </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <!-- Inicialización de DataTable -->
-                <script>
-                    var tabla = document.querySelector("#tabla");
-                    var dataTable = new DataTable(tabla);
-                </script>
-                <!-- Confirmación para eliminar -->
-                <script>
-                    const usu = () => {
-                        Swal.fire({
-                            title: 'Eliminar',
-                            text: "¿Quieres eliminar a este usuario?",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#FF8000',
-                            cancelButtonColor: '#d33',
-                            cancelButtonText: 'No, cancelar!',
-                            confirmButtonText: 'Sí, eliminar!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.href = "?c=aprendiz&a=BorrarApre&id_aprendiz=<?= $r->id_aprendiz ?>";
-                            }
-                        });
-                    }
-                </script>
-            </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <script>
+                // Inicializar DataTable
+                var tabla = document.querySelector("#tabla");
+                var dataTable = new DataTable(tabla);
+
+                // Función para confirmar la eliminación
+                function confirmarEliminacion(id) {
+                    Swal.fire({
+                        title: 'Eliminar',
+                        text: "¿Quieres eliminar este programa?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#FF8000',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'No, cancelar!',
+                        confirmButtonText: 'Sí, eliminar!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = "?c=programa&a=BorrarPro&id_programa=" + id;
+                        }
+                    });
+                }
+            </script>
         </div>
     </div>
-</body>
-</html>
+</div>

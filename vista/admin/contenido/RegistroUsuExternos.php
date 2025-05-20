@@ -1,5 +1,5 @@
 
-    <div id="content">
+<div id="content">
     <br>
    <center>
       <div  class="card w-75">
@@ -28,17 +28,41 @@
 </div>
 <br>
 
-<!--Cargo-->
+<!--tipo doc y documento-->
 <div class="row">
+
+<div class="col">
+<label for="">Tipo de documento:</label>
+  <select name="tipodocf" id='tipodocf' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de documento">
+  <option selected>Tipo de documento</option>
+  <option value=" C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="C.E">C.E</option>
+  <option value="P.E.P">P.E.P</option>
+  </select>
+</div>
+
+<div class="col">
+  <label for="">Número de documento:</label>
+  <input name="documentof" id='documentof' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Numero ocumento">
+</div>
+ 
+</div>
+<br>
+<!--correo y cargo-->
+<div class="row">
+
+<div class="col">
+  <label for="">Correo funcionario:</label>
+  <input name="correof" id='correof' type="email" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Correo">
+
+  </div>
 
 <div class="col">
   <label for="">Cargo Funcionario:</label>
   <input name="cargo" id='cargo' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Cargo">
- 
-  </div>
-
-</div>
-
+ </div>
+ </div>
   <br><br> 
 
 

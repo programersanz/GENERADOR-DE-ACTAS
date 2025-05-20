@@ -1,0 +1,19 @@
+ <h3>8. Desarrollo Comité</h3>
+    <br>
+    <table class="tablas" id="table4">
+        <tr>
+            
+        <input type="hidden" value="<?php echo $c->acta_contador; ?>">
+            <td><input class="parti" type="hidden" name="d_acta[]" id="d_acta" placeholder="acta" required value="<?=$zz+1?>"/></td>
+            <td><input class="parti" type="text" name="d_nombre_aprendiz[]" id="d_nombre_aprendiz" placeholder="Nombre aprendiz" /></td>
+            <td><textarea class="comit" type="text" name="d_descargos_its[]" id="d_descargos_its" placeholder="Descargos instructor"></textarea></td>
+            <td><textarea class="comit" type="text" name="d_descargos_its_b[]" id="d_descargos_its_b" placeholder="Descargos instructor"></textarea></td>
+            <td><textarea class="comit" type="text" name="d_descargos_its_c[]" id="d_descargos_its_c" placeholder="Descargos instructor"></textarea></td>
+            <td><textarea class="comit" type="text" name="d_descargos_aprendiz[]" id="d_descargos_aprendiz" placeholder="Descargos aprendiz"></textarea></td>
+        </tr>
+    </table>
+    <br>
+    <button id="add4" style="background-color: #39A900; color:white;" class="bt">Agregar</button>
+    <button id="del4" style="background-color: #39A900; color:white;" class="bt">Eliminar</button>
+    <br /><br />
+</center>

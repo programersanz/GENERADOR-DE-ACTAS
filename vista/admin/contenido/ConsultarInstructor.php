@@ -21,6 +21,7 @@
                             <th scope="col"><i class="fa-solid fa-user"></i> Apellido</th>
                             <th scope="col"><i class="fa-solid fa-phone"></i> Teléfono</th>
                             <th scope="col"><i class="fa-solid fa-at"></i> Correo</th>
+                            <th scope="col"><i class="fa-solid fa-hashtag"></i> Documento</th>
                             <th scope="col"><i class="fa-solid fa-gear"></i> Opciones</th>
                         </tr>
                     </thead>
@@ -31,6 +32,7 @@
                             <td><?= $r->apellido ?></td>
                             <td><?= $r->telefono ?></td>
                             <td><?= $r->correo ?></td>
+                            <td><?= $r->documento ?></td>
                             <td>
                                 <!-- Botón para editar -->
                                 <a href="?c=Instructor&a=FormCrear&id=<?= $r->id_instructor ?>" 
@@ -39,13 +41,15 @@
                                    title="Editar">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
+
                                 <!-- Botón para eliminar -->
-                                <a href="?c=Instructor&a=Borrar&id=<?= $r->id_instructor ?>" 
-                                   class="btn" 
-                                   style="background-color: #39A900;" 
-                                   title="Eliminar">
-                                   <i class="fas fa-trash text-white"></i>
-                                </a>
+<a href="javascript:void(0);" 
+   class="btn eliminar-instructor" 
+   style="background-color: #39A900;" 
+   title="Eliminar" 
+   data-id="<?= $r->id_instructor ?>">
+   <i class="fas fa-trash text-white"></i>
+</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -58,23 +62,30 @@
                 </script>
                 <!-- Confirmación para eliminar -->
                 <script>
-                    const usu = () => {
-                        Swal.fire({
-                            title: 'Eliminar',
-                            text: "¿Quieres eliminar a este instructor?",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#FF8000',
-                            cancelButtonColor: '#d33',
-                            cancelButtonText: 'No, cancelar!',
-                            confirmButtonText: 'Sí, eliminar!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.href = "?c=Instructor&a=Borrar&id=<?= $r->id_instructor ?>";
-                            }
-                        });
+    // Agregar evento a todos los botones de eliminar
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".eliminar-instructor").forEach(boton => {
+            boton.addEventListener("click", function() {
+                let instructorId = this.getAttribute("data-id");
+                Swal.fire({
+                    title: 'Eliminar',
+                    text: "¿Quieres eliminar a este instructor?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FF8000',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No, cancelar!',
+                    confirmButtonText: 'Sí, eliminar!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = "?c=Instructor&a=Borrar&id=" + instructorId;
                     }
-                </script>
+                });
+            });
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             </div>
         </div>
     </div>

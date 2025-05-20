@@ -31,8 +31,8 @@ class AprendizController{
     
         $aprendiz->setFicha($_POST['ficha']);
         $aprendiz->setTipo($_POST['Tipo']);
-        $aprendiz->setDocumento($_POST['Numero']);
-        $aprendiz->setNombre($_POST['Nombre_aprendiz']);
+        $aprendiz->setDocumento($_POST['Documento']);
+        $aprendiz->setNombre($_POST['dombre_aprendiz']);
         $aprendiz->setApellido($_POST['Apellido_aprendiz']);
         $aprendiz->setCorreo($_POST['Correo']);
         $aprendiz->setTelefono($_POST['Celular']);

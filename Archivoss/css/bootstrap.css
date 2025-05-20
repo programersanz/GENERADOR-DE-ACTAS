@@ -30,8 +30,7 @@ audio,
 canvas,
 video {
     display: inline-block;
-    *display: inline;
-    *zoom: 1;
+    zoom: 1;
 }
 
 audio:not([controls]) {
@@ -96,7 +95,7 @@ textarea {
 
 button,
 input {
-    *overflow: visible;
+    overflow: visible;
     line-height: normal;
 }
 
@@ -112,6 +111,7 @@ input[type="reset"],
 input[type="submit"] {
     cursor: pointer;
     -webkit-appearance: button;
+    appearance: button;
 }
 
 label,
@@ -130,6 +130,7 @@ input[type="search"] {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     -webkit-appearance: textfield;
+    appearance: textfield;
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -195,7 +196,8 @@ textarea {
 }
 
 .clearfix {
-    *zoom: 1;
+    clear: both;
+    display: block;
 }
 
 .clearfix:before,
@@ -394,7 +396,7 @@ a:hover {
 
 .row-fluid {
     width: 100%;
-    *zoom: 1;
+    zoom: 1;
 }
 
 .row-fluid:before,
@@ -3383,15 +3385,15 @@ input[type="button"].btn-block {
 .btn-danger {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    background-color: #da4f49;
-    *background-color: #bd362f;
+    background-color: #62c462;
+    background-color: #62c462;
     background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
     background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
     background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
     background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
     background-repeat: repeat-x;
-    border-color: #bd362f #bd362f #802420;
+    border-color:#62c462;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);

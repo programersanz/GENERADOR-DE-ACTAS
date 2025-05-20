@@ -19,7 +19,7 @@
       <br>
       <center>
         <div class="card" style="width: 50rem;">
-          <div class="card-body" style="fondo">
+          <div class="card-body">
 
             <br>
             <center>

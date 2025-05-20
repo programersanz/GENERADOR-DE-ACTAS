@@ -16,6 +16,9 @@ private  $telefono =null;
 private  $contrasena =null;
 private  $documento =null;
 
+// Agregado para evitar el error de propiedad indefinida
+private $n_acta = null;
+
 
 
 private $PDO;
@@ -118,11 +121,42 @@ public function Listarusu(){
     }
 
 }
+
+
+public function ValidarUsuario($correo, $contrasena) {
+    $pdo = BaseDeDatos::conectar();
+
+    // Buscamos usuario solo por correo
+    $stmt = $pdo->prepare("SELECT * FROM usuario WHERE correo = ?");
+    $stmt->execute([$correo]);
+    $row = $stmt->fetch(PDO::FETCH_OBJ);
+
+    if ($row) {
+        // Si usas contraseñas en texto plano (no recomendable)
+        if ($row->contrasena === $contrasena) {
+            $usuario = new usuario();
+            $usuario->setId($row->id);
+            $usuario->setNombre($row->nombre);
+            $usuario->setApellido($row->apellido);
+            $usuario->setCorreo($row->correo);
+            $usuario->setRol($row->rol);
+            $usuario->setTelefono($row->telefono);
+            $usuario->setContrasena($row->contrasena);
+            $usuario->setDocumento($row->documento);
+            return $usuario;
+        }
+        // Si usas password_hash(), reemplaza la comparación anterior por:
+        // if (password_verify($contrasena, $row->contrasena)) { ... }
+    }
+
+    return false;
+}
+
 	
 
 public function Obtenerusu($id){
     try{
-         $consulta=$this->PDO->prepare("SELECT * FROM usuario where id=?;");
+         $consulta=$this->PDO->prepare("SELECT *  where id=?;");
         $consulta->execute(array($id));
       $r= $consulta->fetch(PDO::FETCH_OBJ);
        $p= new usuario();
@@ -181,18 +215,34 @@ public function Eliminarusu($id){
 }
 
 
-public function verPerfil()//($Id_Usuario) intentar esto
+public function verPerfil()
 {
-    try{
-        $Id_Usuario=$_SESSION['user']->getId_Usuario();
-        $query = $this->PDO->prepare("SELECT * FROM usuario where Id_Usuario=?;");
-        $query->setFetchMode(PDO::FETCH_CLASS,__CLASS__);
-        $query->execute(array($Id_Usuario));
-        echo(var_dump($Id_Usuario));
-       return $query->fetch();
-       
-    }catch (Exception $e){
-        die ($e->getMessage());
+    try {
+        if (!isset($_SESSION['user'])) {
+            die("Error: No hay sesión activa.");
+        }
+
+        $Id_Usuario = $_SESSION['user']->getId_Usuario();
+
+        // Verificar si el ID es válido
+        if (!is_numeric($Id_Usuario)) {
+            die("Error: El ID de usuario no es válido.");
+        }
+
+        // Depuración
+        var_dump($Id_Usuario);
+
+        // Preparar la consulta con `:id`
+        $query = $this->PDO->prepare("SELECT * FROM usuario WHERE ido = :id");
+        $query->bindValue(':id', $Id_Usuario, PDO::PARAM_INT);
+        $query->execute();
+
+        // Verificar errores en la consulta
+        print_r($query->errorInfo());
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
 }
 

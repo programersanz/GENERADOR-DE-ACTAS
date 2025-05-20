@@ -1,5 +1,5 @@
 
-    <div id="content">
+<div id="content">
     <br>
    <center>
       <div  class="card w-75">
@@ -28,8 +28,36 @@
 </div>
 <br>
 
+<!--documento-->
+<div class="row">
+
+<div class="col">
+  <label for="">Tipo documento:</label>
+  <select name="tipodocf" id='tipodocf' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getTipodocf()?>">
+  <option selected><?=$p->getTipodocf()?></option>
+  <option value=" C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="C.E">C.E</option>
+  <option value="P.E.P">P.E.P</option>
+  </select>
+</div>
+
+<div class="col">
+  <label for="">Número de documento:</label>
+  <input name="documentof" id='documentof' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getDocumentof()?>">
+</div>
+ 
+</div>
+<br>
+
 <!--Cargo-->
 <div class="row">
+
+<div class="col">
+  <label for="">Correo funcionario:</label>
+  <input name="correof" id='correof' type="email" maxlength="35" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getCorreof()?>">
+
+  </div>
 
 <div class="col">
   <label for="">Cargo Funcionario:</label>

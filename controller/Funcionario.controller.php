@@ -24,6 +24,9 @@ class FuncionarioController{
 
         $funcionario->setNombre($_POST['nombre']);
         $funcionario->setApellido($_POST['apellido']);
+        $funcionario->setTipodocf($_POST['tipodocf']);
+        $funcionario->setDocumentof($_POST['documentof']);
+        $funcionario->setCorreof($_POST['correof']);
         $funcionario->setCargo($_POST['cargo']);
       
 
@@ -60,6 +63,9 @@ class FuncionarioController{
         $funcionario->setId_funcionario($_POST['id_funcionario']);
         $funcionario->setNombre($_POST['nombre']);
         $funcionario->setApellido($_POST['apellido']);
+        $funcionario->setTipodocf($_POST['tipodocf']);
+        $funcionario->setDocumentof($_POST['documentof']);
+        $funcionario->setCorreof($_POST['correof']);
         $funcionario->setCargo($_POST['cargo']);
 
   

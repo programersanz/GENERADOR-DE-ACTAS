@@ -1,5 +1,5 @@
 
-    <div id="content">
+<div id="content">
     <br>
    <center>
       <div  class="card w-75">
@@ -24,6 +24,26 @@
   <div class="col">
   <label for="">Apellido Instructor:</label>
   <input name="apellido" id='apellido' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getApellido()?>">
+</div>
+</div>
+<br>
+
+<!-- tipo doc y documento-->
+<div class="row">
+<div class="col">
+  <label for="">Tipo documento:</label>
+  <select name="tipodoc" id='tipodoc' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getTipodoc()?>">
+  <option selected><?=$p->getTipodoc()?></option>
+  <option value=" C.C">C.C</option>
+  <option value="T.I">T.I</option>
+  <option value="C.E">C.E</option>
+  <option value="P.E.P">P.E.P</option>
+  </select>
+</div>
+
+  <div class="col">
+  <label for="">Documento:</label>
+  <input name="documento" id='documento' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getDocumento()?>">
 </div>
 </div>
 <br>
@@ -54,14 +74,14 @@
 
 <div class="col">
   <label for="">Correo Instructor:</label>
-  <input name="correo" id='correo' type="email" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getCorreo()?>">
- 
-  </div>
-  <div class="col">
-  <label for="">Contraseña:</label>
-  <input name="contraseña" id='contraseña' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getContraseña()?>">
-  </div>
+  <input name="correo" id='correo' type="email" maxlength="35" oninput="maxlengthNumber(this);" required  class="" value="<?=$p->getCorreo()?>">
 </div>
+
+<div class="col">
+  <label for="">Contraseña:</label>
+  <input name="contraseña" id='contraseña' type="password" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Contraseña">
+  </div>
+
   <br><br> 
 
 

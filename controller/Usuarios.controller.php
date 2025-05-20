@@ -4,25 +4,20 @@ require_once "modelo/acta.php";
 require_once "modelo/rol.php";
 require_once "modelo/basededatos.php";
 
-class UsuariosController{
+class UsuariosController {
     private $modelo;
 
-    public function __CONSTRUCT(){
-        $this->modelo=new usuario;
-
+    public function __CONSTRUCT() {
+        $this->modelo = new usuario();
     }
-    public function Inicio(){
+
+    public function Inicio() {
         require_once "vista/admin/cabecera/cabecera.php";
         require_once "vista/actas/index.php";
-
         require_once "vista/admin/footer/footer.php";
     }
 
-    
-
-    function save()//aqui se insertan los datos del registro
-    {
-       
+    public function save() {
         $usuario = new usuario();
 
         $usuario->setNombre($_POST['nombre']);
@@ -33,168 +28,103 @@ class UsuariosController{
         $usuario->setContrasena($_POST['contrasena']);
         $usuario->setDocumento($_POST['documento']);
 
-      
-      //  $acta->setId_Rol($_POST['Id_Area']);
         $usuario->insertar();
-        //$this->envioMail();
-       // $this->envioMail($Correo_Electronico,$Contrasena_acta$acta);
-    
-        header("location:?c=vistas&a=usuario");
-        die("registro exitoso");
-    
-       // require "Views/acta$acta/registro.php";
- 
-        
-    
+
+        header("Location: ?c=vistas&a=usuario");
+        exit;
     }
 
-    function validar()
-    {
-        $correo= $_POST['correo'];
-        $contrasena= $_POST['contrasena'];
-    
-     
-         if($this->modelo->login($correo,$contrasena))
-        {
-        
-            $id_rol=$_SESSION['user']->getRol();
-      
-            if($id_rol == 1)
-    
-            
-            {   
-                header('location: ?c=Vistas&a=ConsultarFicha');
-                
-               
-            }
-            if($id_rol == 2)
-            {
-                 header('location: ?c=Vistas&a=UsuActas');
-            }
+    public function validar() {
+        session_start();
 
-    
-        }else{ 
-         //agregar alerta
-         header('location: ?c=inicio&a=inicio');
-            ?> 
-    <script type="text/javascript">
-      jsFunction();
-    </script>
-    <?php
-    
-           
-    
+        $correo = $_POST['correo'];
+        $contrasena = $_POST['contrasena'];
+
+        $usuario = $this->modelo->login($correo, $contrasena);
+
+        if ($usuario) {
+            $_SESSION['user'] = $usuario;
+            $id_rol = $usuario->getRol();
+
+            if ($id_rol == 1) {
+                // Redireccionar a admin
+                header("Location: ?c=Vistas&a=ConsultarFicha");
+                exit;
+            } elseif ($id_rol == 2) {
+                // Redireccionar a instructor
+                header("Location: ?c=Vistas&a=ConsultarFicha2");
+                exit;
+            } else {
+                // Rol desconocido
+                header("Location: ?c=inicio&a=inicio");
+                exit;
+            }
+        } else {
+            // Login fallido
+            header("Location: ?c=inicio&a=inicio");
+            exit;
         }
     }
 
-    public function Guardarusu(){
-
-      
-        $usuario=new usuario();
-    
+    public function Guardarusu() {
+        $usuario = new usuario();
         $usuario->setId($_POST['id']);
         $usuario->setNombre($_POST['nombre']);
         $usuario->setApellido($_POST['apellido']);
         $usuario->setCorreo($_POST['correo']);
-       
         $usuario->setTelefono($_POST['telefono']);
         $usuario->setContrasena($_POST['contrasena']);
         $usuario->setDocumento($_POST['documento']);
 
-    
-    
-        $usuario ->getId() > 0 ?
-    
-        $this ->modelo-> Actualizarusu($usuario):
-  
-        
-        header("location:?c=vistas&a=Usuario");
-    
-    
+        if ($usuario->getId() > 0) {
+            $this->modelo->Actualizarusu($usuario);
+        }
+
+        header("Location: ?c=vistas&a=Usuario");
+        exit;
     }
 
-    public function GuardarContra(){
-
-      
-        $usuario=new usuario();
-    
-
+    public function GuardarContra() {
+        $usuario = new usuario();
         $usuario->setId($_POST['id']);
         $usuario->setContrasena($_POST['contrasena']);
-    
 
-    
-    
-        $usuario ->getId() > 0 ?
-    
-        $this ->modelo->  ActualizarContraseña($usuario):
-  
-        
-        header("location:?c=vistas&a=Usuario");
-    
-    
+        if ($usuario->getId() > 0) {
+            $this->modelo->ActualizarContraseña($usuario);
+        }
+
+        header("Location: ?c=vistas&a=Usuario");
+        exit;
     }
 
-
-    
-    function logout()
-    {
+    public function logout() {
+        session_start();
         session_destroy();
-        header('location:?c=Vistas&a=Home');
-      //  header('location:?c=home&a=index');  //header('location: index.php');
-    
+        header("Location: ?c=Vistas&a=Home");
+        exit;
     }
 
-
-    public function Borrarusu(){
+    public function Borrarusu() {
         $this->modelo->Eliminarusu($_GET["id"]);
-        header("location:?c=vistas&a=Usuario");
+        header("Location: ?c=vistas&a=Usuario");
+        exit;
     }
-  
 
-
-
-    public function Editusu(){
-
-        if(isset($_GET['id'])){
-        
-        
-          $p=$this ->modelo ->Obtenerusu ($_GET['id']);
-         
-    
-          
-        
-          require_once "vista/admin/cabecera/cabecera.php";
-          require_once "vista/admin/contenido/usuariosedit.php";
-          require_once "vista/admin/footer/footer.php";
-        
+    public function Editusu() {
+        if (isset($_GET['id'])) {
+            $p = $this->modelo->Obtenerusu($_GET['id']);
+            require_once "vista/admin/cabecera/cabecera.php";
+            require_once "vista/admin/contenido/usuariosedit.php";
+            require_once "vista/admin/footer/footer.php";
         }
-    
-    
-        
-        
-        }
+    }
 
-        
-    public function EditContra(){
-
-        if(isset($_GET['id'])){
-        
-        
-          $p=$this ->modelo ->ObtenerContra($_GET['id']);
-         
-    
-          
-        
-          require_once "vista/admin/cabecera/cabecera.php";
-          require_once "vista/admin/contenido/cambiarContraseña.php";
-          require_once "vista/admin/footer/footer.php";
-        
+    public function EditContra() {
+        if (isset($_GET['id'])) {
+            $p = $this->modelo->ObtenerContra($_GET['id']);
+            require_once "vista/admin/cabecera/cabecera.php";
+            require_once "vista/admin/contenido/cambiarContraseña.php";
+            require_once "vista/admin/footer/footer.php";
         }
-    
-    
-        
-        
-        }
-
+    }
 }

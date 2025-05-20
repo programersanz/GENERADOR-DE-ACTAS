@@ -28,6 +28,8 @@
               <tr>
                 <th scope="col" class="text-center">Nombre</th>
                 <th scope="col" class="text-center">Apellido</th>
+                <th scope="col" class="text-center">Documento</th>
+                <th scope="col" class="text-center">Correo</th>
                 <th scope="col" class="text-center">Cargo</th>
                 <th scope="col" class="text-center">
                   <i class="fas fa-cogs"></i> Opciones
@@ -39,6 +41,8 @@
                 <tr>
                   <td><?= $r->nombre ?></td>
                   <td><?= $r->apellido ?></td>
+                  <td><?= $r->documentof ?></td>
+                  <td><?= $r->correof ?></td>
                   <td><?= $r->cargo ?></td>
                   <td class="text-center">
                     <a href="?c=Funcionario&a=FormCrearfuncionario&id=<?= $r->id_funcionario ?>" type="button" style="background-color: #39A900;" class="btn">
@@ -93,3 +97,4 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
+

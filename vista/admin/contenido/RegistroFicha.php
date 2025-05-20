@@ -34,36 +34,53 @@
 
 <div class="col">
   <label for="">Tipo Jornada</label>
-  <select name="jornada" id='jornada' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de jornada">
+  <select name="jornada" id='jornada' maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de jornada">
   <option selected> Seleccione la jornada</option>
-  <option value="Diruna">Diurna</option>
-  <option value="Nocturna">Nocturna</option>
+  <option value="Diurna">DIURNA</option>
+  <option value="Nocturna">NOCTURNA</option>
+  <option value="Nocturna">MIXTA</option>
   </select>
 </div>
 
 <div class="col">
   <label for="">Tipo Formación</label>
-  <select name="tipo_forma" id='tipo_forma' type="text" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de formación">
+  <select name="tipo_forma" id='tipo_forma' maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Tipo de formación">
   <option selected> Seleccione el tipo de formación</option>
-  <option value="Técnico">Técnico</option>
-  <option value="Tecnológo">Tecnológo</option>
+  <option value="Técnico">TÉCNICO</option>
+  <option value="Tecnológo">TECNÓLOGO</option>
+  <option value="Tecnológo">AUXILIAR</option>
   </select>
 </div>
 </div>
 
 <br>
 
-<!--Fecha de inicio y fecha fin-->
+<!--Fecha de inicio y fecha fin lectiva-->
 <div class="row">
 
 <div class="col">
-  <label for=""> Fecha inicio (Electiva)</label>
-  <input name="fecha_inicio" id='fecha_inicio' type="date" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Fecha inicio">
+  <label for=""> Fecha inicio (Lectiva)</label>
+  <input name="fecha_inicio" id='fecha_inicio' type="date" oninput="maxlengthNumber(this);" required  class="" placeholder="Fecha inicio">
  
   </div>
   <div class="col">
-  <label for=""> Fecha Fin (Electiva)</label>
-  <input name="fecha_fin" id='fecha_fin' type="date" maxlength="25" oninput="maxlengthNumber(this);" required  class="" placeholder="Teléfono">
+  <label for=""> Fecha Fin (Lectiva)</label>
+  <input name="fecha_fin" id='fecha_fin' type="date" oninput="maxlengthNumber(this);" required  class="" placeholder="Fecha fin">
+  </div>
+</div>
+<br>
+
+<!--Fecha de inicio y fecha fin productiva-->
+<div class="row">
+
+<div class="col">
+  <label for=""> Fecha inicio (Productiva)</label>
+  <input name="fecha_iniciop" id='fecha_iniciop' type="date" oninput="maxlengthNumber(this);" required  class="" placeholder="Fecha inicio">
+ 
+  </div>
+  <div class="col">
+  <label for=""> Fecha Fin (Productiva)</label>
+  <input name="fecha_finp" id='fecha_finp' type="date" oninput="maxlengthNumber(this);" required  class="" placeholder="Fecha fin">
   </div>
 </div>
 <br>
@@ -73,7 +90,7 @@
 
 <div class="col">
   <label for="">Programa Formación</label>
- <select name="programa" id='programa' type="text"  oninput="maxlengthNumber(this);" required  class="" placeholder="programa">
+ <select name="programa" id='programa' oninput="maxlengthNumber(this);" required  class="" placeholder="programa">
 
 <option selected>Seleccione el programa</option>
 <?php foreach($programas as $programa): ?>

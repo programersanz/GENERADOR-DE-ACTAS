@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col">
     <br>
-    <div style="margin: 0px 200px 0px 200px; padding-bottom: 0px;padding-top: 0px; background-color: ##FFFFFF">
+    <div style="margin: 0px 200px 0px 200px; padding-bottom: 0px;padding-top: 0px; background-color: #FFFFFF">
 
 <center>
 <h2>Conclusiones</h2>

@@ -7,7 +7,7 @@
 <h1 class="fixed-center" > ACTA DE REUNIÓN</h1>
  
 
-    <label for=""> Numero acta  <?=$p->getN_acta()?></label>
+    <label for=""> ACTA No <?=$p->getN_acta()?></label>
 </center>
 </div>
 <br>
@@ -386,20 +386,12 @@
   </div>
 
   <p>  <p>
-  <div class="row">
-    <div class="col">
-    <br>
-      <label for="">7.Hechos Actuales:</label>
-      <textarea name="hechos_actuales" id='hechos_actuales' type="text" maxlength="9000"  cols="60" rows="10" oninput="maxlengthNumber(this);" required  class="" value=""><?=$p->getHechos_actuales()?> </textarea >
-    </div>
-   
 
-  </div>
 <p>
 
 <div  class="card">
       <div class="">
-        <h5>8.Desarrollo Comité</h5>
+        <h5>7.Desarrollo Comité</h5>
 
 <br>
 
@@ -452,7 +444,7 @@
 <div class="row">
     <div class="col">
     <br>
-      <label for="">9.Informe Vocero:</label>
+      <label for="">8.Informe Vocero:</label>
       <textarea name="informe_vocero" id='informe_vocero' type="text" maxlength="9000"  cols="60" rows="10" oninput="maxlengthNumber(this);" required  class="" value=""><?=$p->getInforme_vocero()?> </textarea >
     </div>
    

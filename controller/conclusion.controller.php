@@ -7,45 +7,28 @@ require_once "modelo/basededatos.php";
 require_once "modelo/conclusiones.php";
 
 
-class ActaController{
+class conclusion {
     private $modelo;
 
-    public function __CONSTRUCT(){
-        $this->modelo=new acta;
-
+    public function prueba2() {
+        $this->modelo = new Acta(); // Asegúrate de que la clase se llame Acta (con mayúscula)
     }
 
-    
-    public function Inicio(){
+    public function Inicio() {
         require_once "vista/admin/cabecera/cabecera.php";
-        require_once "vista/actas/index.php"; //cambiar redireccion
-
+        require_once "vista/actas/index.php"; // Redirección correcta de la vista
         require_once "vista/admin/footer/footer.php";
     }
 
-    function save()//aqui se insertan los datos del registro
-    {
+    public function save() {
+        // Instanciar la clase 'conclusion' correctamente
+        $conclusion = new Conclusion();
 
-  
+        // Verificar que el método 'prueba2' existe en la clase 'conclusion'
+        $conclusion->prueba2();
 
-        $prueba2 = new conclusion();
-       /* $prueba2 = new acta();*/
-        $prueba2->prueba2();
-
-      /*  $prueba2->prueba2();*/
-        
-
-
-        //$this->envioMail();
-       // $this->envioMail($Correo_Electronico,$Contrasena_acta$acta);
-    
-        header("location:?c=vistas&a=ConsultarFicha");
-        die("registro exitoso");
-    
-       // require "Views/acta$acta/registro.php";
- 
-
-    
+        // Redirección a la página después del registro exitoso
+        header("Location: ?c=vistas&a=ConsultarFicha");
+        exit(); // Se recomienda usar 'exit()' en lugar de 'die()' para terminar el script
     }
-
-    }
+}

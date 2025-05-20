@@ -183,6 +183,13 @@ class VistasController{
                require_once "vista/admin/footer/footer.php";
             }
 
+            public function ConsultarFicha2(){
+
+                require_once "vista/usuario/cabecera/cabecera.php";
+               require_once "vista/usuario/contenido/ConsultarFicha2.php";
+               require_once "vista/admin/footer/footer.php";
+            }
+
             public function ConsultarInstructor(){
 
                 require_once "vista/admin/cabecera/cabecera.php";
@@ -269,6 +276,7 @@ class VistasController{
                require_once "vista/admin/contenido/usuariosedit.php";
                require_once "vista/admin/footer/footer.php";
             }
+            
 
 
 
@@ -293,15 +301,13 @@ class VistasController{
             public function UsuActas(){
                 require_once "vista/usuario/cabecera/cabecera.php";
                require_once "vista/usuario/contenido/actas.php";
-
                require_once "vista/usuario/footer/footer.php";
             }
 
-
-
-
-
-
-
+            public function UsuActas2(){
+               require_once "vista/usuario/cabecera/cabecera.php";
+               require_once "vista/usuario/contenido/actas2.php";
+               require_once "vista/usuario/footer/footer.php";
+            }
 
 }

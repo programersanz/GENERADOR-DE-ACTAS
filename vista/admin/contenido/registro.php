@@ -8,7 +8,7 @@
       
 <br>
 <center>
-<h1>Registro</h1>
+<h1>Registro administrador</h1>
 </center>
 <form action="?c=usuarios&a=save" id="usuario" class="sign-up-form" method="post" >
 <br>

@@ -155,29 +155,26 @@ public function ValidarUsuario($correo, $contrasena) {
 	
 
 public function Obtenerusu($id){
-    try{
-         $consulta=$this->PDO->prepare("SELECT *  where id=?;");
+    try {
+        $consulta = $this->PDO->prepare("SELECT * FROM usuario WHERE id=?;");
         $consulta->execute(array($id));
-      $r= $consulta->fetch(PDO::FETCH_OBJ);
-       $p= new usuario();
-       $p ->setId($r->id);
-       $p ->setNombre($r->nombre);
-       $p ->setApellido($r->apellido);
-       $p ->setCorreo($r->correo);
-       $p ->setRol($r->rol);
-       $p ->setTelefono($r->telefono);
-       $p ->setDocumento($r->documento);
-       $p ->setContrasena($r->contrasena);
+        $r = $consulta->fetch(PDO::FETCH_OBJ);
+        
+        $p = new usuario();
+        $p->setId($r->id);
+        $p->setNombre($r->nombre);
+        $p->setApellido($r->apellido);
+        $p->setCorreo($r->correo);
+        $p->setRol($r->rol);
+        $p->setTelefono($r->telefono);
+        $p->setDocumento($r->documento);
+        $p->setContrasena($r->contrasena);
 
-     return $p;
-
-
-    }catch(Exception $e){
+        return $p;
+    } catch(Exception $e){
         die($e->getMessage());
     }
-
 }
-
 
 public function insertar()
 {

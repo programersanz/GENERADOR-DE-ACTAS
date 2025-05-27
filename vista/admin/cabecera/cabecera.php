@@ -37,7 +37,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap" rel="stylesheet">
-    <title>Fichas</title>
+<?php
+  $titulos = [
+    'ConsultaUsuExternos' => 'Consulta de Funcionarios',
+    'usuario' => 'Administradores',
+    'ConsultarInstructor' => 'Consulta de Instructores',
+    'ConsultarAprendiz' => 'Consulta de Aprendices',
+    'ConsultarFicha' => 'Consulta de Fichas',
+    'ConsultarPrograma' => 'Consulta de Programas',
+    'RegistroUsuExternos' => 'Registro de Funcionarios',
+    'RegistroInstructor' => 'Registro de Instructores',
+    'RegistroAprendiz' => 'Registro de Aprendices',
+    'RegistroFicha' => 'Registro de Fichas',
+    'RegistroPrograma' => 'Registro de Programas',
+    'Registro' => 'Registro de Administradores',
+    'Perfil' => 'Mi Perfil',
+    'inicio' => 'Inicio'
+  ];
+
+  $tituloPagina = 'Sistema'; // título por defecto
+
+  if (isset($_GET['a']) && isset($titulos[$_GET['a']])) {
+    $tituloPagina = $titulos[$_GET['a']];
+  } elseif (isset($_GET['c']) && isset($titulos[$_GET['c']])) {
+    $tituloPagina = $titulos[$_GET['c']];
+  }
+
+  echo "<title>$tituloPagina</title>";
+?>
   </head>
  
     

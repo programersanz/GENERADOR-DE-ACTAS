@@ -3,8 +3,19 @@ $.extend( true, $.fn.dataTable.defaults, {
 	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
-		"sLengthMenu": "_MENU_ records per page"
+		"sLengthMenu": "Mostrar _MENU_ registros por página",
+		"sZeroRecords": "No se encontraron resultados",
+		"sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+		"sInfoEmpty": "Mostrando 0 registros",
+		"sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+		"sSearch": "Buscar:",
+		"oPaginate": {
+			"sFirst": "Primero",
+			"sLast": "Último",
+			"sNext": "Siguiente",
+			"sPrevious": "Anterior"
 	}
+	}	
 } );
 
 

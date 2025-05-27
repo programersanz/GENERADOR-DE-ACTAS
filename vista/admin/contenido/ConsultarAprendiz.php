@@ -64,6 +64,20 @@
                 <script>
                     var tabla = document.querySelector("#tabla");
                     var dataTable = new DataTable(tabla);
+                // Espera un pequeño tiempo para asegurarse de que se renderice el input
+                setTimeout(() => {
+                const searchInput = document.querySelector(".dataTable-input");
+                if (searchInput) {
+                    const icon = document.createElement("i");
+                    icon.className = "fa fa-search"; // Usa Font Awesome
+                    icon.style.marginLeft = "8px";
+                    icon.style.fontSize = "16px";
+                    icon.style.color = "#555";
+
+                    // Agrega el icono justo después del input
+                    searchInput.parentNode.appendChild(icon);
+                }
+                }, 100); // espera 100 milisegundos por seguridad
                 </script>
                 <!-- Confirmación para eliminar -->
                 <script>

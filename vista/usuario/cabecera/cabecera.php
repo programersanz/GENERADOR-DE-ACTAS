@@ -2,6 +2,19 @@
 <!doctype html>
 <html lang="en">
   <head>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Perfil</title>
+  </head>
 
   <body class="<?= isset($ocultarMenu) && $ocultarMenu ? 'sin-menu' : '' ?>">
 
@@ -22,7 +35,23 @@
     <script src="icons.js"></script>
     <link href="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
 <script src="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
-    <title><?php echo $titulo ?? 'Fichas'; ?></title>
+<?php
+  $titulos = [
+   'ConsultarFicha2' => 'Consulta de Fichas',
+   'usuPerfil' => 'Mi Perfil',
+   'Menu' => 'Actas de fichas',
+  ];
+
+  $tituloPagina = 'Sistema'; // título por defecto
+
+  if (isset($_GET['a']) && isset($titulos[$_GET['a']])) {
+    $tituloPagina = $titulos[$_GET['a']];
+  } elseif (isset($_GET['c']) && isset($titulos[$_GET['c']])) {
+    $tituloPagina = $titulos[$_GET['c']];
+  }
+
+  echo "<title>$tituloPagina</title>";
+?>
   </head>
  
     
@@ -67,7 +96,9 @@
           <a href="?c=vistas&a=usuPerfil"><i class="fas fa-circle-user"></i>Perfil</a>
         </li>
         <li>
-          <a href="?c=vistas&a=ConsultarFicha2"><i class="fas fa-circle-user"></i>Fichas</a>
+          <a href="?c=vistas&a=ConsultarFicha2"><i class="fas fa-circle-user"></i>Fichas
+          
+        </a>
         </li>
 
       </ul>

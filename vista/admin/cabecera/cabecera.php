@@ -16,7 +16,7 @@
 
     
     <!-- FONTAWESOME : https://kit.fontawesome.com/a23e6feb03.js -->
-    <link rel="stylesheet"   href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.  5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <!-- Bootstrap CSS -->
     <!-- CSS only -->
     <script src="vista/js/alertas.js"></script>
@@ -52,7 +52,13 @@
     'RegistroPrograma' => 'Registro de Programas',
     'Registro' => 'Registro de Administradores',
     'Perfil' => 'Mi Perfil',
-    'inicio' => 'Inicio'
+    'inicio' => 'Inicio',
+    'FormCrearfuncionario' => 'Editar Funcionario',
+    'Registrar' => 'Registrar Administrador',
+    'EditPrograma' => 'Editar Programa',  
+    'FormCrearficha' => 'Editar Ficha',
+    'Editusu' => 'Editar Administrador', 
+    'FormCrear' => 'Editar Instructor',
   ];
 
   $tituloPagina = 'Sistema'; // título por defecto

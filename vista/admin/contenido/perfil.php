@@ -20,7 +20,6 @@
       <center>
         <div class="card" style="width: 50rem;">
           <div class="card-body">
-
             <br>
             <center>
               <h1>  <i class="fas fa-user"></i> PERFIL</h1>
@@ -31,23 +30,23 @@
             <form>
               <div class="row">
                 <div class="col">
-                  <label for=""><i class="fas fa-user"></i> Nombre:</label>
+                  <label for=""><i class="fas fa-user"></i> Nombre</label>
                   <input type="text" class="" placeholder="<?=$_SESSION['user']->getNombre();?>" readonly>
                 </div>
 
                 <div class="col">
-                  <label for=""><i class="fas fa-user"></i> Apellido:</label>
+                  <label for=""><i class="fas fa-user"></i> Apellido</label>
                   <input type="text" class="" placeholder="<?=$_SESSION['user']->getApellido();?>" readonly>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col">
-                  <label for=""><i class="fas fa-at"></i> Correo:</label>
+                  <label for=""><i class="fas fa-at"></i> Correo</label>
                   <input type="text" class="" placeholder="<?=$_SESSION['user']->getCorreo();?>" readonly>
                 </div>
                 <div class="col">
-                  <label for=""><i class="fas fa-phone"></i> Teléfono:</label>
+                  <label for=""><i class="fas fa-phone"></i> Teléfono</label>
                   <input type="text" class="" placeholder="<?=$_SESSION['user']->getTelefono();?>" readonly>
                 </div>
               </div>

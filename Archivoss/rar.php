@@ -98,8 +98,6 @@ if(isset($_POST['submit'])!=""){
     </button>
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-  
       <ul class="navbar-nav ml-auto">
       <div class="borde">
 
@@ -243,8 +241,27 @@ if(isset($_POST['submit'])!=""){
 </table>
 
 <script>
+   window.addEventListener("DOMContentLoaded", () => {
+        const tabla = document.querySelector("#tabla");
+        if (tabla) {
+            const dataTable = new DataTable(tabla);
+            setTimeout(() => {
+            const searchInput = document.querySelector(".dataTable-input");
+            if (searchInput && !searchInput.dataset.iconAdded) {
+                const icon = document.createElement("i");
+                icon.className = "fa fa-search";
+                icon.style.marginLeft = "8px";
+                icon.style.fontSize = "16px";
+                icon.style.color = "#555";
+                searchInput.parentNode.appendChild(icon);
+                searchInput.dataset.iconAdded = "true"; // evitar duplicados
+            }
+            }, 100);
+        }
+        });
 var tabla= document.querySelector("#tabla");
 var dataTable=new DataTable(tabla);
+
 </script>
 </div>
 

@@ -44,7 +44,7 @@
                         <!-- Botón Acta en cada fila -->
                         <a href="?c=Acta2&a=Menu&id=<?= htmlspecialchars($r->N_ficha) ?>" 
                         type="button" class="btn" style="background-color: #39A900;">
-                        <i class="fas fa-file-signature text-black"></i>  
+                        <i class="fas fa-book text-white"></i>
                         </a>
                     </td>
                 </tr>

@@ -59,6 +59,8 @@
     'FormCrearficha' => 'Editar Ficha',
     'Editusu' => 'Editar Administrador', 
     'FormCrear' => 'Editar Instructor',
+    'Acta' => 'Acta de Ficha',
+
   ];
 
   $tituloPagina = 'Sistema'; // título por defecto

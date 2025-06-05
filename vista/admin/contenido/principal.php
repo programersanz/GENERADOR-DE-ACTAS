@@ -1,3 +1,4 @@
+<?php if (!isset($contenidoAgenda)) { $contenidoAgenda = ""; } ?>
 <div id="content">
     <div class="col">
         <!--<img src="multimedia/logo-naranja.png" class="fixed-righ"  width="200" height="200">-->
@@ -82,15 +83,46 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <br>
-                    <h3>AGENDA O PUNTOS A DESARROLLAR:</h3>
-                    <textarea name="agenda" id="agenda" cols="60" rows="5" required class="form-control">
-                  1. Comité Extraordinario de Evaluación y Seguimiento, aprendices de la FICHA - <?=$p->getN_ficha()?> de <?=$p->getPrograma()?>
-                    </textarea>
-                </div>
-            </div>
+            <br>
+            <h3>
+            <label for="contenidoAgenda" class="form-label">AGENDA O PUNTOS A DESARROLLAR:</label></h3>
+<div class="form-control" id="contenidoAgenda" contenteditable="true"
+  style="min-height: 150px; padding: 10px; border: 1px solid #ced4da; border-radius: .375rem; background-color: white; font-size: 1rem; line-height: 1.5;">
+  <?php echo htmlspecialchars($contenidoAgenda); ?>
+</div>
+<input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
+<input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:3000");
+  const actaId = "<?php echo $id_acta ?? 'acta_default'; ?>"; // Ajusta si tienes una variable para identificar el acta
+  const agenda = document.getElementById("contenidoAgenda");
+
+  socket.emit("join-acta", actaId);
+
+  agenda.addEventListener("input", () => {
+    socket.emit("edit", {
+      actaId,
+      field: "agenda",
+      content: agenda.innerHTML
+    });
+  });
+
+  socket.on("update", ({ field, content }) => {
+    if (field === "agenda") {
+      agenda.innerHTML = content;
+    }
+  });
+
+  // Copiar contenido al campo hidden antes de enviar
+  const form = document.querySelector("form");
+  if (form) {
+    form.addEventListener("submit", () => {
+      document.getElementById("contenidoAgenda_hidden").value = agenda.innerHTML;
+    });
+  }
+</script>
 
             <div class="row">
     <div class="col">

@@ -56,11 +56,13 @@
     'FormCrearfuncionario' => 'Editar Funcionario',
     'Registrar' => 'Registrar Administrador',
     'EditPrograma' => 'Editar Programa',  
-    'FormCrearficha' => 'Editar Ficha',
+    'Acta = FormCrearficha' => 'Editar Ficha',
     'Editusu' => 'Editar Administrador', 
-    'FormCrear' => 'Editar Instructor',
     'Acta' => 'Acta de Ficha',
+    'Instructor' => 'Editar Instructor',
+    'Aprendiz' => 'Editar Aprendiz',
 
+    'Ficha' => 'Editar Ficha',
   ];
 
   $tituloPagina = 'Sistema'; // título por defecto

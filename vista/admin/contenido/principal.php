@@ -1,4 +1,5 @@
 <?php if (!isset($contenidoAgenda)) { $contenidoAgenda = ""; } ?>
+
 <div id="content">
     <div class="col">
         <!--<img src="multimedia/logo-naranja.png" class="fixed-righ"  width="200" height="200">-->
@@ -93,36 +94,7 @@
 <input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
 <input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-<script>
-  const socket = io("http://localhost:3000");
-  const actaId = "<?php echo $id_acta ?? 'acta_default'; ?>"; // Ajusta si tienes una variable para identificar el acta
-  const agenda = document.getElementById("contenidoAgenda");
 
-  socket.emit("join-acta", actaId);
-
-  agenda.addEventListener("input", () => {
-    socket.emit("edit", {
-      actaId,
-      field: "agenda",
-      content: agenda.innerHTML
-    });
-  });
-
-  socket.on("update", ({ field, content }) => {
-    if (field === "agenda") {
-      agenda.innerHTML = content;
-    }
-  });
-
-  // Copiar contenido al campo hidden antes de enviar
-  const form = document.querySelector("form");
-  if (form) {
-    form.addEventListener("submit", () => {
-      document.getElementById("contenidoAgenda_hidden").value = agenda.innerHTML;
-    });
-  }
-</script>
 
             <div class="row">
     <div class="col">
@@ -577,14 +549,19 @@ $(document).ready(function() {
 });
 </script>
 
-<!-- Sección 5: hechos actualeses -->
 
+
+<!-- Sección 5: Hechos actuales -->
 <div class="row">
-    <div class="col">
+  <div class="col">
     <br>
-      <H5 for="">5. Hechos actuales</H5>
-      <textarea name="hechos_actuales" id='hechos_actuales' type="text" cols="60" rows="10" required  class="" placeholder="Hechos actuales"></textarea >
+    <h5 for="">5. Hechos actuales</h5>
+    <div class="form-control" id="hechos_actuales" contenteditable="true"
+      style="min-height: 150px; padding: 10px; border: 1px solid #ced4da; border-radius: .375rem; background-color: white; font-size: 1rem; line-height: 1.5;">
+      <?php echo htmlspecialchars($hechos_actuales ?? ""); ?>
     </div>
+    <input type="hidden" name="hechos_actuales" id="hechos_actuales_hidden">
+  </div>
 </div>
 
 <!-- Sección 6: Desarrollo del Comité -->
@@ -661,20 +638,29 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
- <!-- <7.Informe Vocero>-->
+ <!-- Sección 7: Informe Vocero y Subvocero -->
+<div class="row">
+  <div class="col">
+    <br>
+    <h5>7. Informe del vocero</h5>
+    <div class="form-control" id="informe_vocero" contenteditable="true"
+      style="min-height: 150px; padding: 10px; border: 1px solid #ced4da; border-radius: .375rem; background-color: white; font-size: 1rem; line-height: 1.5;">
+      <?php echo htmlspecialchars($informe_vocero ?? ""); ?>
+    </div>
+    <input type="hidden" name="informe_vocero" id="informe_vocero_hidden">
+  </div>
+</div>
 
 <div class="row">
-    <div class="col">
+  <div class="col">
     <br>
-      <H5 for="">7. Informe Vocero</H5>
-      <textarea name="informe_vocero" id='informe_vocero' type="text" cols="60" rows="10" required  class="" placeholder="Informe vocero"></textarea >
+    <h5> Informe del sub-vocero</h5>
+    <div class="form-control" id="informe_subvocero" contenteditable="true"
+      style="min-height: 150px; padding: 10px; border: 1px solid #ced4da; border-radius: .375rem; background-color: white; font-size: 1rem; line-height: 1.5;">
+      <?php echo htmlspecialchars($informe_subvocero ?? ""); ?>
     </div>
-
-    <div class="col">
-    <br>
-      <H5 for="">Informe Subvocero</H5>
-      <textarea name="informe_subvocero" id='informe_subvocero' type="text" cols="60" rows="10" required  class="" placeholder="Informe subvocero"></textarea >
-    </div>
+    <input type="hidden" name="informe_subvocero" id="informe_subvocero_hidden">
+  </div>
 </div>
   
 
@@ -1224,6 +1210,75 @@ function guardarActaYGenerarPDF() {
 
 
         </form>
+
+        <!-- Scripts de Socket.IO y sincronización colaborativa -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:3000");
+  const actaId = "<?php echo $id_acta ?? 'acta_default'; ?>";
+
+  const agenda = document.getElementById("contenidoAgenda");
+  const hechos = document.getElementById("hechos_actuales");
+  const informeVocero = document.getElementById("informe_vocero");
+  const informeSubvocero = document.getElementById("informe_subvocero");
+
+
+  socket.emit("join-acta", actaId);
+
+  agenda?.addEventListener("input", () => {
+    socket.emit("edit", {
+      actaId,
+      field: "agenda",
+      content: agenda.innerHTML
+    });
+  });
+
+  hechos?.addEventListener("input", () => {
+    socket.emit("edit", {
+      actaId,
+      field: "hechos_actuales",
+      content: hechos.innerHTML
+    });
+  });
+
+  informeVocero?.addEventListener("input", () => {
+    socket.emit("edit", { 
+        actaId, 
+        field: "informe_vocero",
+         content: informeVocero.innerHTML });
+  });
+
+  informeSubvocero?.addEventListener("input", () => {
+    socket.emit("edit", { 
+        actaId, 
+        field: "informe_subvocero", 
+        content: informeSubvocero.innerHTML });
+  });
+
+  socket.on("update", ({ field, content }) => {
+    if (field === "agenda" && agenda) agenda.innerHTML = content;
+    if (field === "hechos_actuales" && hechos) hechos.innerHTML = content;
+    if (field === "informe_vocero" && informeVocero) informeVocero.innerHTML = content;
+    if (field === "informe_subvocero" && informeSubvocero) informeSubvocero.innerHTML = content;
+  });
+
+  const form = document.querySelector("form");
+  if (form) {
+    form.addEventListener("submit", () => {
+      document.getElementById("contenidoAgenda_hidden").value = agenda?.innerHTML ?? '';
+      document.getElementById("hechos_actuales_hidden").value = hechos?.innerHTML ?? '';
+      document.getElementById("informe_vocero_hidden").value = informeVocero?.innerHTML ?? '';
+      document.getElementById("informe_subvocero_hidden").value = informeSubvocero?.innerHTML ?? '';
+    });
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
     </div>
 </div>
 

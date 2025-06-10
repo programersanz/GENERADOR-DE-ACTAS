@@ -18,10 +18,9 @@ io.on('connection', socket => {
   socket.on('join-acta', actaId => {
     socket.join(actaId);
     if (actasData[actaId]) {
-      socket.emit('update', {
-        field: "agenda",
-        content: actasData[actaId]["agenda"] || ""
-      });
+      for (const [field, content] of Object.entries(actasData[actaId])) {
+        socket.emit('update', { field, content });
+      }
     }
   });
 

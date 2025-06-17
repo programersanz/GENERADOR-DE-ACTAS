@@ -91,8 +91,7 @@
   style="min-height: 150px; padding: 10px; border: 1px solid #ced4da; border-radius: .375rem; background-color: white; font-size: 1rem; line-height: 1.5;">
   <?php echo htmlspecialchars($contenidoAgenda); ?>
 </div>
-<input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
-<input type="hidden" name="contenidoAgenda" id="contenidoAgenda_hidden">
+<input type="hidden" name="agenda" id="contenidoAgenda_hidden">
 
 
 
@@ -1218,6 +1217,7 @@ function guardarActaYGenerarPDF() {
   const actaId = "<?php echo $id_acta ?? 'acta_default'; ?>";
 
   const agenda = document.getElementById("contenidoAgenda");
+  const agenda_hidden = document.getElementById("contenidoAgenda_hidden");
   const hechos = document.getElementById("hechos_actuales");
   const informeVocero = document.getElementById("informe_vocero");
   const informeSubvocero = document.getElementById("informe_subvocero");
@@ -1271,6 +1271,13 @@ function guardarActaYGenerarPDF() {
       document.getElementById("informe_subvocero_hidden").value = informeSubvocero?.innerHTML ?? '';
     });
   }
+  if (form && agenda && agenda_hidden) {
+    form.addEventListener("submit", () => {
+      agenda_hidden.value = agenda.innerHTML;
+    });
+  }
+
+
 </script>
 
 </body>

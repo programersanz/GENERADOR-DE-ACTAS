@@ -1159,6 +1159,12 @@ function guardarActaYGenerarPDF() {
         return;
     }
 
+     // 👇 Copiar contenido editable a los campos ocultos
+    document.getElementById("contenidoAgenda_hidden").value = document.getElementById("contenidoAgenda").innerHTML;
+    document.getElementById("hechos_actuales_hidden").value = document.getElementById("hechos_actuales").innerHTML;
+    document.getElementById("informe_vocero_hidden").value = document.getElementById("informe_vocero").innerHTML;
+    document.getElementById("informe_subvocero_hidden").value = document.getElementById("informe_subvocero").innerHTML;
+
     const formData = new FormData(form);
 
     // Validaciones básicas

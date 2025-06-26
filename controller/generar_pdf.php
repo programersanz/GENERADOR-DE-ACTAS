@@ -2,27 +2,21 @@
 require('fpdf.php');
 
 // Conexión a la base de datos
-$mysqli = new mysqli("localhost", "root", "", "acta_completas");
+require_once "modelo/basededatos.php";
+$pdo = BaseDeDatos::Conectar();
 
 // Verificar la conexión
-if ($mysqli->connect_error) {
-    die("Conexión fallida: " . $mysqli->connect_error);
-}
 
 // Obtener el ID del acta (puede ser pasado desde la URL o un formulario)
 $idActa = isset($_GET['id']) ? $_GET['id'] : 1;  // Por ejemplo, el id lo pasas por la URL
 
 // Consultar la tabla 'actas' para obtener todos los datos necesarios
 $query = "SELECT * FROM actas WHERE id_acta = ?";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param('i', $idActa);  // Bind el parámetro
-$stmt->execute();
-$result = $stmt->get_result();
-$actaData = $result->fetch_assoc();  // Aquí obtienes los datos del acta
+$stmt = $pdo->prepare("SELECT * FROM actas WHERE id_acta = ?");
+$stmt->execute([$idActa]);
+$actaData = $stmt->fetch(PDO::FETCH_ASSOC);  // Aquí obtienes los datos del acta
 
 // Cerrar la conexión a la base de datos
-$stmt->close();
-$mysqli->close();
 
 // Generación del PDF
 class PDF extends FPDF {

@@ -6,22 +6,13 @@ require_once "modelo/rol.php";
 require_once "modelo/participantes.php";
 require_once "modelo/bd.php";*/
 /*require_once "../vista/admin/contenido/prueba.php";*/
+require_once "modelo/basededatos.php";
+$conexion = BaseDeDatos::Conectar();
 
 ////////////////// CONEXION A LA BASE DE DATOS //////////////////
 /*require_once "modelo/acta.php";*/
 
 
-$host = 'localhost';
-$basededatos = 'acta_completas';
-$usuario = 'root';
-$contraseña = '';
-
-
-
-$conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
-if ($conexion -> connect_errno) {
-  die("Fallo la conexión: (" . $conexion->connect_errno . ") " . $conexion->connect_error);
-}
   ///////////////////CONSULTA DE LOS ALUMNOS///////////////////////
 
   if(isset($_POST['insertar']))
@@ -52,8 +43,8 @@ if ($conexion -> connect_errno) {
    $instertar_casos = "INSERT INTO casos_especiales(n_acta,nombre_aprendiz,nombre_its,descripcion) VALUES $valoresQ ";
    $instertar_conclusiones = "INSERT INTO conclusiones(n_acta,Aprendiz,instructor,descripcion) VALUES $valoresQ ";
   
-   mysqli_query ($conexion, $instertar_casos);                                            
-   mysqli_query ($conexion, $instertar_conclusiones);  
+   $conexion->prepare($instertar_casos)->execute();
+    $conexion->prepare($instertar_conclusiones)->execute();
   
                           
                           $item1 = next($items1);

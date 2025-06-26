@@ -6,24 +6,13 @@ require_once "modelo/rol.php";
 require_once "modelo/participantes.php";
 require_once "modelo/bd.php";*/
 /*require_once "../vista/admin/contenido/prueba.php";*/
+require_once "modelo/basededatos.php";
+$conexion = BaseDeDatos::Conectar();
 
 ////////////////// CONEXION A LA BASE DE DATOS //////////////////
 /*require_once "modelo/acta.php";*/
 
 
-$host = 'localhost';
-$basededatos = 'acta_completas';
-$usuario = 'root';
-$contraseña = '';
-
-
-
-$conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
-if ($conexion -> connect_errno) 
-  $conexion = new mysqli($host, $usuario,$contraseña, $basededatos);
-  if ($conexion -> connect_errno) {
-    die("Fallo la conexión: (" . $conexion->connect_errno . ") " . $conexion->connect_error);
-}
   ///////////////////CONSULTA DE LOS ALUMNOS///////////////////////
 
 
@@ -56,7 +45,7 @@ if ($conexion -> connect_errno)
         ///////// QUERY DE INSERCIÓN /////
         
         $query = "INSERT INTO participantes (n_acta,nombre,apellido,cargo,asistencia) VALUES $valoresQ ";
-        $sqlRes = $conexion->query($query) or die($conexion->error);
+        $conexion->prepare($query)->execute();
         
                                 $item0 = next( $items0 );
                                 $item1 = next( $items1 );

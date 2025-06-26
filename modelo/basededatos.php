@@ -1,5 +1,10 @@
 <?php
 
+
+require_once "modelo/basededatos.php";
+$conexion = BaseDeDatos::Conectar();
+
+
 class BaseDeDatos
 {
     // Definir los parámetros de la base de datos

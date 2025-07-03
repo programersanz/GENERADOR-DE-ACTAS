@@ -194,72 +194,77 @@ endforeach;
             <br><br>
             Teniendo en cuenta el parágrafo 2. Se realizó invitación a representantes del área de bienestar al aprendiz a las sesiones del comité de evaluación y seguimiento para que ayuden al comité a tomar una decisión más objetiva. Quienes tendrán voz, pero no Voto.</p>
 
-        <div class="part">
-            <center>
-                <datalist id="nombres-lista">
-                    <?php foreach ($funco as $fun): ?>
-                        <option value="<?= htmlspecialchars($fun->getNombre() . ' ' . $fun->getApellido(), ENT_QUOTES, 'UTF-8') ?>">
-                    <?php endforeach; ?>
-                </datalist>
+            <div class="part">
+  <center>
+    <datalist id="nombres-lista">
+      <?php foreach ($funco as $fun): ?>
+        <option value="<?= htmlspecialchars($fun->getNombre() . ' ' . $fun->getApellido(), ENT_QUOTES, 'UTF-8') ?>">
+      <?php endforeach; ?>
+    </datalist>
 
-                <input type="hidden" name="n_acta" value="<?= $zz + 1 ?>">
+    <input type="hidden" name="n_acta" value="<?= $zz + 1 ?>">
 
-                <table class="tablas" id="table">
-                    <thead class="t-head">
-                        <tr>
-                            <th scope="col">Nombres y Apellidos</th>
-                            <th scope="col">Cargo</th>
-                            <th scope="col">Asistencia</th>
-                        </tr>
-                    </thead>
-                    <tbody class="t-body">
-                        <?php for ($i = 0; $i < 3; $i++): ?>
-                            <tr>
-                                <td>
-                                    <input type="hidden" name="n_acta[]" value="<?= $zz + 1 ?>">
-                                    <input list="nombres-lista" name="nombre[]" class="form-control" style="width: 350px; height: 50px;" 
-                                           placeholder="Escriba nombre o apellido" required 
-                                           oninvalid="this.setCustomValidity('Por favor, seleccione o escriba un nombre válido.')"
-                                           oninput="this.setCustomValidity('')">
-                                </td>
-                                <td>
-                                    <select name="cargo[]" class="form-control" style="width:320px; height:50px;" required>
-                                        <option value="" disabled selected>Seleccione un cargo</option>
-                                        <option value="instructor jefe de taller">instructor jefe de taller</option>
-                                        <option value="instructora jefe de taller">instructora jefe de taller</option>
-                                        <option value="Instructor">Instructor</option>
-                                        <option value="Instructora">Instructora</option>
-                                        <option value="Funcionario de apoyo a Bienestar de Aprendices">Funcionario de apoyo a Bienestar de Aprendices</option>
-                                        <option value="Coordinadora Académica">Coordinadora Académica</option>
-                                        <option value='Representante centro formación'>Representante centro formación</option>
-                                        <option value="Representante de Contrato de Aprendizaje">Representante de Contrato de Aprendizaje</option>
-                                        <option value="Vocero de la ficha">Vocero de la ficha</option>
-                                        <option value="Vocera de la ficha">Vocera de la ficha</option>
-                                        <option value="Subvocero de la ficha">Subvocero de la ficha</option>
-                                        <option value="Subvocera de la ficha">Subvocera de la ficha</option>
-                                        <option value="Representante Profesional Integral">Representante Profesional Integral</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="asistencia[]" class="form-control" style="width:250px; height:50px;" required>
-                                        <option value="" disabled selected>Seleccione asistencia</option>
-                                        <option value="Asistió">Asistió</option>
-                                        <option value="No Asistió">No Asistió</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        <?php endfor; ?>
-                    </tbody>
-                </table>
+    <!-- 🟦 Contenedor gris con bordes redondeados -->
+    <div style="background-color: #f2f2f2; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: auto; max-width: 100%; overflow-x: auto;">
 
-                <input type="hidden" id="contador-filas" value="3">
-                <br><br>
-                <button type="button" id="add" style="background-color: #39A900; color:white;" class="bt">Agregar</button>
-                <button type="button" id="del" style="background-color: #39A900; color:white;" class="bt">Eliminar</button>
-                <br><br>
-            </center>
-        </div>
-    </div>
+      <!-- 🟦 Tabla con ancho mínimo para mantener estructura -->
+      <table class="tablas" id="table" style="margin: auto; min-width: 900px; table-layout: fixed; border-collapse: separate; border-spacing: 10px;">
+        <thead class="t-head">
+          <tr>
+            <th scope="col">Nombres y Apellidos</th>
+            <th scope="col">Cargo</th>
+            <th scope="col">Asistencia</th>
+          </tr>
+        </thead>
+        <tbody class="t-body">
+          <?php for ($i = 0; $i < 3; $i++): ?>
+            <tr>
+              <td>
+                <input type="hidden" name="n_acta[]" value="<?= $zz + 1 ?>">
+                <input list="nombres-lista" name="nombre[]" class="form-control" style="width: 100%; height: 50px;"
+                  placeholder="Escriba nombre o apellido" required
+                  oninvalid="this.setCustomValidity('Por favor, seleccione o escriba un nombre válido.')"
+                  oninput="this.setCustomValidity('')">
+              </td>
+              <td>
+                <select name="cargo[]" class="form-control" style="width: 100%; height: 50px;" required>
+                  <option value="" disabled selected>Seleccione un cargo</option>
+                  <option value="instructor jefe de taller">instructor jefe de taller</option>
+                  <option value="instructora jefe de taller">instructora jefe de taller</option>
+                  <option value="Instructor">Instructor</option>
+                  <option value="Instructora">Instructora</option>
+                  <option value="Funcionario de apoyo a Bienestar de Aprendices">Funcionario de apoyo a Bienestar de Aprendices</option>
+                  <option value="Coordinadora Académica">Coordinadora Académica</option>
+                  <option value='Representante centro formación'>Representante centro formación</option>
+                  <option value="Representante de Contrato de Aprendizaje">Representante de Contrato de Aprendizaje</option>
+                  <option value="Vocero de la ficha">Vocero de la ficha</option>
+                  <option value="Vocera de la ficha">Vocera de la ficha</option>
+                  <option value="Subvocero de la ficha">Subvocero de la ficha</option>
+                  <option value="Subvocera de la ficha">Subvocera de la ficha</option>
+                  <option value="Representante Profesional Integral">Representante Profesional Integral</option>
+                </select>
+              </td>
+              <td>
+                <select name="asistencia[]" class="form-control" style="width: 100%; height: 50px;" required>
+                  <option value="" disabled selected>Seleccione asistencia</option>
+                  <option value="Asistió">Asistió</option>
+                  <option value="No Asistió">No Asistió</option>
+                </select>
+              </td>
+            </tr>
+          <?php endfor; ?>
+        </tbody>
+      </table>
+      </div>        
+      <!-- Botones dentro del contenedor -->
+      <input type="hidden" id="contador-filas" value="3">
+      <br>
+      <button type="button" id="add" style="background-color: #39A900; color:white;" class="bt">Agregar</button>
+      <button type="button" id="del" style="background-color: #39A900; color:white;" class="bt">Eliminar</button>
+      <br><br>
+    
+
+  </center>
 </div>
 
 <script>
@@ -415,77 +420,85 @@ endforeach;
 
 <!-- 4. Casos Particulares -->
 <div class="row">
-    <div class="col">
-        <br>
-        <center>
-            <h3>4. Casos Particulares</h3>
+  <div class="col">
+    <br>
+    <center>
+      <h3>4. Casos Particulares</h3>
 
-            <!-- Campo oculto para la ficha -->
-            <input name="id_ficha" id="id_ficha" type="hidden" maxlength="25"
-                oninput="maxlengthNumber(this);" required class="form-control"
-                value="<?= $p->getId_ficha() ?>">
+      <!-- Campo oculto para la ficha -->
+      <input name="id_ficha" id="id_ficha" type="hidden" maxlength="25"
+        oninput="maxlengthNumber(this);" required class="form-control"
+        value="<?= $p->getId_ficha() ?>">
 
-            <table class="tablas" id="table3">
-                <thead>
-                    <tr>
-                        <th>Aprendiz</th>
-                        <th>Tipo Doc</th>
-                        <th>Documento</th>
-                        <th>Instructor</th>
-                        <th>Descripción</th>
-                        <th>Tipo Falta</th>
-                        <th>Reglamento</th>
-                        <th>Clasificación falta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input class="parti" type="text" name="nombre_aprendiz[]" placeholder="Aprendiz" required /></td>
-                        <td>
-                            <select name="tipo[]" class="parti" required>
-                                <option selected>Tipo doc</option>
-                                <option value="C.C">C.C</option>
-                                <option value="T.I">T.I</option>
-                                <option value="CE">C.E</option>
-                                <option value="T.E">T.E</option>
-                                <option value="P.A.S">P.A.S</option>
-                            </select>
-                        </td>
-                        <td><input class="parti" type="text" name="documento[]" placeholder="Documento" required /></td>
-                        <td><input class="parti" type="text" name="nombre_its[]" placeholder="Instructor" required /></td>
-                        <td><textarea class="area" name="description[]" style="width:310px; height:55px;" placeholder="Descripción" required></textarea></td>
-                        <td>
-                            <select name="falta[]" class="parti">
-                                <option value="Académica">Académica</option>
-                                <option value="Disciplinaria">Disciplinaria</option>
-                                <option value="Académica y Disciplinaria">Académica y Disciplinaria</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="reglamento[]" class="selectt" required>
-                                <option selected>N/A</option>
-                                <?php foreach ($reca as $reg): ?>
-                                    <option value="<?= $reg->getNombre_falta() ?>"><?= $reg->getNombre_falta() ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="cla_falta[]" class="parti">
-                                <option value="Leve.">Leve.</option>
-                                <option value="Grave.">Grave.</option>
-                                <option value="Gravisima.">Gravisima.</option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+      <!-- Contenedor responsivo con scroll horizontal -->
+      <div style="overflow-x: auto; width: 100%;">
+        <table class="tablas" id="table3"
+          style="margin: auto; min-width: 1100px; table-layout: fixed; border-collapse: separate; border-spacing: 10px;">
+          <thead>
+            <tr>
+              <th>Aprendiz</th>
+              <th>Tipo Doc</th>
+              <th>Documento</th>
+              <th>Instructor</th>
+              <th>Descripción</th>
+              <th>Tipo Falta</th>
+              <th>Reglamento</th>
+              <th>Clasificación falta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="parti" type="text" name="nombre_aprendiz[]" placeholder="Aprendiz"
+                  style="width: 100%; min-width: 100px;" required /></td>
+              <td>
+                <select name="tipo[]" class="parti" style="width: 100%;" required>
+                  <option selected>Tipo doc</option>
+                  <option value="C.C">C.C</option>
+                  <option value="T.I">T.I</option>
+                  <option value="CE">C.E</option>
+                  <option value="T.E">T.E</option>
+                  <option value="P.A.S">P.A.S</option>
+                </select>
+              </td>
+              <td><input class="parti" type="text" name="documento[]" placeholder="Documento"
+                  style="width: 100%;" required /></td>
+              <td><input class="parti" type="text" name="nombre_its[]" placeholder="Instructor"
+                  style="width: 100%;" required /></td>
+              <td><textarea class="area" name="description[]"
+                  style="width: 100%; min-width: 150px; height: 55px;" placeholder="Descripción" required></textarea></td>
+              <td>
+                <select name="falta[]" class="parti" style="width: 100%;">
+                  <option value="Académica">Académica</option>
+                  <option value="Disciplinaria">Disciplinaria</option>
+                  <option value="Académica y Disciplinaria">Académica y Disciplinaria</option>
+                </select>
+              </td>
+              <td>
+                <select name="reglamento[]" class="selectt" style="width: 100%;" required>
+                  <option selected>N/A</option>
+                  <?php foreach ($reca as $reg): ?>
+                  <option value="<?= $reg->getNombre_falta() ?>"><?= $reg->getNombre_falta() ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </td>
+              <td>
+                <select name="cla_falta[]" class="parti" style="width: 100%;">
+                  <option value="Leve.">Leve.</option>
+                  <option value="Grave.">Grave.</option>
+                  <option value="Gravisima.">Gravisima.</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-            <br>
-            <button id="add3" style="background-color: #39A900; color:white;" class="bt">Agregar</button>
-            <button id="del3" style="background-color: #39A900; color:white;" class="bt">Eliminar</button>
-            <br><br>
-        </center>
-    </div>
+      <br>
+      <button id="add3" style="background-color: #39A900; color:white;" class="bt">Agregar</button>
+      <button id="del3" style="background-color: #39A900; color:white;" class="bt">Eliminar</button>
+      <br><br>
+    </center>
+  </div>
 </div>
 
 <script type="text/javascript">

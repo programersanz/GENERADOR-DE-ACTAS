@@ -4,8 +4,9 @@
         <h1>Fichas</h1>
     </center>
 
-    <div class="card-body">
-        <table class="table" id="tabla">
+    <div class="card-body" style="overflow-x: auto;">
+        <div style="min-width: 1000px;">
+            <table class="table" id="tabla" style="width: 100%;">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nª Ficha</th>
@@ -76,6 +77,7 @@
                 </tr>
                 <?php endif; ?>
             </tbody>
+         </div>
         </table>
 
         <script>

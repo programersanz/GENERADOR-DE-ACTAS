@@ -5,7 +5,7 @@
     </center>
 
     <div class="card-body" style="overflow-x: auto;">
-        <div style="min-width: 1000px;">
+    <div class="table-responsive">
             <table class="table" id="tabla" style="width: 100%;">
             <thead class="thead-dark">
                 <tr>

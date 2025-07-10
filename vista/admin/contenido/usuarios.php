@@ -10,7 +10,7 @@
     <div id="content">
         <center><h1>Usuarios</h1></center>
         <div class="card">
-            <div class="card-body">
+            <div class="table-responsive">
                 <table class="table" id="tabla">
                     <thead class="thead-dark">
                         <tr>
@@ -70,6 +70,7 @@
                     var tabla = document.querySelector("#tabla");
                     var dataTable = new DataTable(tabla);
                 </script>
+                </div>
             </div>
         </div>
     </div>

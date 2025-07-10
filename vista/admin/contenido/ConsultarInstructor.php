@@ -12,7 +12,7 @@
         <br>
         <center><h1>Instructores</h1></center>
         <div class="card">
-            <div class="card-body">
+            <div class="table-responsive">
                 <br>
                 <table class="table" id="tabla">
                     <thead class="thead-dark">
@@ -105,6 +105,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             </div>
+         </div>
         </div>
     </div>
 </body>

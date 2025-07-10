@@ -21,7 +21,8 @@
       </center>
 
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="overflow-x: auto;">
+          <div class="table-responsive">
           <br>
           <table class="table" id="tabla">
             <thead class="thead-dark">
@@ -106,7 +107,7 @@
         </div>
       </div>
     </div>
-
+    </div>
     <!-- Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -12,7 +12,7 @@
         <br>
         <center><h1>Aprendices</h1></center>
         <div class="card">
-            <div class="card-body">
+            <div class="table-responsive">
                 <br>
                 <table class="table" id="tabla">
                     <thead class="thead-dark">
@@ -101,5 +101,6 @@
             </div>
         </div>
     </div>
+                </div>  
 </body>
 </html>
